@@ -107,7 +107,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                 loading.dismiss();
                                 try {
                                     JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                                    if (jsonRESULTS.getBoolean("error") == false){
+                                    if (!jsonRESULTS.getBoolean("error")){
                                         // Jika login berhasil maka data nama yang ada di response API
                                         // akan diparsing ke activity selanjutnya
                                         Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
@@ -120,9 +120,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                         String error_message = jsonRESULTS.getString("message");
                                         Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
                                     }
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                } catch (JSONException e) {
+                                } catch (IOException | JSONException e) {
                                     e.printStackTrace();
                                 }
                             } else {
