@@ -29,7 +29,7 @@ public class DashboardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        setCustomToolbar();
+//        setCustomToolbar();
 
         initComponents();
 
@@ -71,32 +71,32 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             };
 
-    // Action bar > Menu
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
-        return true;
-    }
-
-    // Action bar item action
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id){
-            case R.id.action_notification:
-                Toast.makeText(this, "Notification Clicked", Toast.LENGTH_SHORT).show();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    // custom toolbar
-    private void setCustomToolbar(){
-        mainToolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(mainToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-    }
+//    // Action bar > Menu
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getMenuInflater().inflate(R.menu.action_bar_menu, menu);
+//        return true;
+//    }
+//
+//    // Action bar item action
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        int id = item.getItemId();
+//
+//        switch (id){
+//            case R.id.action_notification:
+//                Toast.makeText(this, "Notification Clicked", Toast.LENGTH_SHORT).show();
+//                break;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//
+//    // custom toolbar
+//    private void setCustomToolbar(){
+//        mainToolbar = findViewById(R.id.toolbar);
+//
+//        setSupportActionBar(mainToolbar);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
+//    }
 }

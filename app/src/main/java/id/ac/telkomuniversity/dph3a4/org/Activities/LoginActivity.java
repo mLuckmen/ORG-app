@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                 if (jsonRESULTS.getBoolean("error") == false){
                                     // Jika login berhasil maka data nama yang ada di response API
                                     // akan diparsing ke activity selanjutnya
-                                    Toast.makeText(mContext, "Berhasil Login", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
 //                                    String nama = jsonRESULTS.getJSONObject("data").getString("nama");
                                     Intent intent = new Intent(mContext, DashboardActivity.class);
 //                                    intent.putExtra("result_nama", nama);
@@ -112,9 +112,9 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                     String error_message = jsonRESULTS.getString("message");
                                     Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
                                 }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
@@ -136,32 +136,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
 //            etPassword.requestFocus();
 //            return;
 //        }
-
-//        Call<LoginResponse> call = RetrofitClient
-//                .getInstance()
-//                .getApi()
-//                .loginRequest(username, password);
-//
-//        call.enqueue(new Callback<LoginResponse>() {
-//            @Override
-//            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-//                LoginResponse loginResponse = response.body();
-//
-//                if (!loginResponse.isError()){
-//
-//                    // save user
-//                    // open homepage
-//                    Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<LoginResponse> call, Throwable t) {
-//
-//            }
-//        });
 
     }
 }
