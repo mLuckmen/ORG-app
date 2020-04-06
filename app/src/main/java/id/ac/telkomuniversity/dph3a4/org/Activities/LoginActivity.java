@@ -62,7 +62,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnLogin:
-                loading = ProgressDialog.show(mContext, null, "Harap tunggu...", true, false);
                 UserLogin();
                 break;
         }
@@ -91,51 +90,56 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
             return;
         }
 
-        mApiService.loginRequest(username, password)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()){
-                            loading.dismiss();
-                            try {
-                                JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                                if (jsonRESULTS.getBoolean("error") == false){
-                                    // Jika login berhasil maka data nama yang ada di response API
-                                    // akan diparsing ke activity selanjutnya
-                                    Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
-//                                    String nama = jsonRESULTS.getJSONObject("data").getString("nama");
-                                    Intent intent = new Intent(mContext, DashboardActivity.class);
-//                                    intent.putExtra("result_nama", nama);
-                                    startActivity(intent);
-                                } else {
-                                    // Jika login gagal
-                                    String error_message = jsonRESULTS.getString("message");
-                                    Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
-                                }
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            loading.dismiss();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("debug", "onFailure: ERROR > " + t.toString());
-                        loading.dismiss();
-                    }
-                });
-
-//        Toast.makeText(mContext, "username = " + username + ", password = " + password, Toast.LENGTH_LONG).show();
-
 //        if (password.length() < 6){
 //            etPassword.setError("Kata Sandi minimal 6 karakter");
 //            etPassword.requestFocus();
 //            return;
 //        }
+
+        if (password != "" && username != ""){
+            loading = ProgressDialog.show(mContext, null, "Harap tunggu...", true, false);
+
+            mApiService.loginRequest(username, password)
+                    .enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.isSuccessful()){
+                                loading.dismiss();
+                                try {
+                                    JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                                    if (jsonRESULTS.getBoolean("error") == false){
+                                        // Jika login berhasil maka data nama yang ada di response API
+                                        // akan diparsing ke activity selanjutnya
+                                        Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+//                                    String nama = jsonRESULTS.getJSONObject("data").getString("nama");
+                                        Intent intent = new Intent(mContext, DashboardActivity.class);
+//                                    intent.putExtra("result_nama", nama);
+                                        startActivity(intent);
+                                    } else {
+                                        // Jika login gagal
+                                        String error_message = jsonRESULTS.getString("message");
+                                        Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                loading.dismiss();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Log.e("debug", "onFailure: ERROR > " + t.toString());
+                            loading.dismiss();
+                        }
+                    });
+        }
+
+
+//        Toast.makeText(mContext, "username = " + username + ", password = " + password, Toast.LENGTH_LONG).show();
 
     }
 }
