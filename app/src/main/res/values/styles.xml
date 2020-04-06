@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ButtonPrimary" parent="Widget.AppCompat.Button">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/button_ripple_blue_primary</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="ButtonSecondary" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

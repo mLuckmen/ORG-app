@@ -28,14 +28,14 @@
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:background="@drawable/button_ripple_transparent"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:fontFamily="@font/lato_bold"
         android:shadowColor="@android:color/transparent"
         android:text="Next"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/colorPrimaryDark"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="24dp"
+        android:layout_marginRight="16dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"/>
 
@@ -43,16 +43,16 @@
         android:id="@+id/btn_skip"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
-        android:background="@drawable/button_ripple_transparent"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:fontFamily="@font/lato_bold"
         android:shadowColor="@android:color/transparent"
         android:text="Skip"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textColor="@color/colorPrimaryDark"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginLeft="24dp"/>
+        android:layout_marginLeft="16dp"/>
 
 
 </RelativeLayout>

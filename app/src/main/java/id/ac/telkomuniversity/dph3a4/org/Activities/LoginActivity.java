@@ -20,6 +20,7 @@ import id.ac.telkomuniversity.dph3a4.org.ApiHelper.BaseApiService;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.UtilsApi;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.HomeFragment;
 import id.ac.telkomuniversity.dph3a4.org.R;
+import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,24 +34,27 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
     Context mContext;
     BaseApiService mApiService;
 
+    SharedPrefManager sharedPrefManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mContext = this;
-        mApiService = UtilsApi.getAPIService(); // init yang ada di package api helper
         initComponents();
 
-//        btnLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
-//            }
-//        });
+        if (sharedPrefManager.getSpLoggedIn()){
+            startActivity(new Intent(mContext, DashboardActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        }
     }
 
     public void initComponents(){
+        mContext = this;
+        mApiService = UtilsApi.getAPIService(); // init yang ada di package api helper
+        sharedPrefManager = new SharedPrefManager(this);
+
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
 
@@ -111,10 +115,15 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                         // Jika login berhasil maka data nama yang ada di response API
                                         // akan diparsing ke activity selanjutnya
                                         Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
-//                                    String nama = jsonRESULTS.getJSONObject("data").getString("nama");
+
+                                        // set shared preferences
+                                        sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+
+//                                        String nama = jsonRESULTS.getJSONObject("data").getString("nama");
                                         Intent intent = new Intent(mContext, DashboardActivity.class);
-//                                    intent.putExtra("result_nama", nama);
+//                                        intent.putExtra("result_nama", nama);
                                         startActivity(intent);
+                                        finish();
                                     } else {
                                         // Jika login gagal
                                         String error_message = jsonRESULTS.getString("message");
