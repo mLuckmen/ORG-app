@@ -13,7 +13,7 @@ public class UtilsApi {
 
 
     // Mendeklarasikan Interface BaseApiService
-    public static BaseApiService getAPIService(){
-        return RetrofitClient.getClient(BASE_URL).create(BaseApiService.class);
-    }
+//    public static BaseApiService getAPIService(){
+////        return RetrofitClient.getClient(BASE_URL).create(BaseApiService.class);
+//    }
 }

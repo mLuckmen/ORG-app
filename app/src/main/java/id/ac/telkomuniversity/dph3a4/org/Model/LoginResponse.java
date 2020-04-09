@@ -1,5 +1,7 @@
 package id.ac.telkomuniversity.dph3a4.org.Model;
 
+import java.util.List;
+
 public class LoginResponse {
 
     private boolean error;

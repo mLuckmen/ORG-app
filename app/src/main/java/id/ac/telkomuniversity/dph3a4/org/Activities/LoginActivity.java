@@ -11,14 +11,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.List;
 
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.BaseApiService;
-import id.ac.telkomuniversity.dph3a4.org.ApiHelper.UtilsApi;
-import id.ac.telkomuniversity.dph3a4.org.Fragments.HomeFragment;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
+import id.ac.telkomuniversity.dph3a4.org.Model.LoginResponse;
+import id.ac.telkomuniversity.dph3a4.org.Model.User;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import okhttp3.ResponseBody;
@@ -42,17 +48,22 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         setContentView(R.layout.activity_login);
 
         initComponents();
+    }
 
-        if (sharedPrefManager.getSpLoggedIn()){
-            startActivity(new Intent(mContext, DashboardActivity.class)
-                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            finish();
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (SharedPrefManager.getInstance(this).getSpLoggedIn()) {
+            Intent intent = new Intent(mContext, DashboardActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
     public void initComponents(){
         mContext = this;
-        mApiService = UtilsApi.getAPIService(); // init yang ada di package api helper
+//        mApiService = UtilsApi.getAPIService(); // init yang ada di package api helper
         sharedPrefManager = new SharedPrefManager(this);
 
         etUsername = findViewById(R.id.etUsername);
@@ -103,46 +114,135 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
         if (password != "" && username != ""){
             loading = ProgressDialog.show(mContext, null, "Harap tunggu...", true, false);
 
-            mApiService.loginRequest(username, password)
-                    .enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()){
-                                loading.dismiss();
-                                try {
-                                    JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                                    if (!jsonRESULTS.getBoolean("error")){
-                                        // Jika login berhasil maka data nama yang ada di response API
-                                        // akan diparsing ke activity selanjutnya
-                                        Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+            Call<ResponseBody> call = RetrofitClient.getInstance().getApi().loginRequest(username, password);
 
-                                        // set shared preferences
-                                        sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        loading.dismiss();
 
-//                                        String nama = jsonRESULTS.getJSONObject("data").getString("nama");
-                                        Intent intent = new Intent(mContext, DashboardActivity.class);
-//                                        intent.putExtra("result_nama", nama);
-                                        startActivity(intent);
-                                        finish();
-                                    } else {
-                                        // Jika login gagal
-                                        String error_message = jsonRESULTS.getString("message");
-                                        Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
-                                    }
-                                } catch (IOException | JSONException e) {
-                                    e.printStackTrace();
-                                }
+                        try {
+                            JSONObject data = new JSONObject(response.body().string());
+
+                            if (!data.getBoolean("error")) {
+                                JSONArray user = data.getJSONArray("user");
+                                JSONObject userdata = user.getJSONObject(0);
+
+                                int nim = userdata.getInt("nim");
+                                String username = userdata.getString("username");
+                                String password = userdata.getString("password");
+                                String nama = userdata.getString("nama");
+                                String jabatan = userdata.getString("jabatan");
+                                String noWA = userdata.getString("noWA");
+                                String noHP = userdata.getString("noHP");
+                                String idLine = userdata.getString("idLine");
+                                String foto = userdata.getString("foto");
+                                String prodi = userdata.getString("prodi");
+                                String nim_pengurus = userdata.getString("nim_pengurus");
+
+//                                Toast.makeText(mContext, data.getString("message"), Toast.LENGTH_LONG).show();
+
+                                sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+                                sharedPrefManager.saveUser(nim, username, password, nama, jabatan, noWA, noHP, idLine, foto, prodi, nim_pengurus);
+
+                                Intent intent = new Intent(mContext, DashboardActivity.class)
+                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
                             } else {
-                                loading.dismiss();
+                                Toast.makeText(mContext, data.getString("message"), Toast.LENGTH_LONG).show();
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.e("debug", "onFailure: ERROR > " + t.toString());
-                            loading.dismiss();
+                        } catch (JSONException | IOException e) {
+                            e.printStackTrace();
                         }
-                    });
+                    } else {
+                        loading.dismiss();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Log.e("debug", "onFailure: ERROR > " + t.toString());
+                    loading.dismiss();
+                }
+            });
+
+//            Call<LoginResponse> call = RetrofitClient.getInstance().getApi().loginRequest(username, password);
+//
+//            call.enqueue((new Callback<LoginResponse>() {
+//                @Override
+//                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//                    LoginResponse loginResponse = response.body();
+//
+////                    int nim = loginResponse.getUser().getNim();
+//                    String nama = loginResponse.getUser().getNama();
+//
+//                    Log.d("LOGIN", "nim = " + ", nama = " + nama);
+//
+//                    if (!loginResponse.isError()) {
+//                        loading.dismiss();
+//
+//                        SharedPrefManager.getInstance(mContext).saveUser(loginResponse.getUser());
+//
+//                        Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
+//
+//                        Intent intent = new Intent(mContext, DashboardActivity.class)
+//                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                        startActivity(intent);
+//                    } else {
+//                        loading.dismiss();
+//                        Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<LoginResponse> call, Throwable t) {
+//                    Log.e("debug", "onFailure: ERROR > " + t.toString());
+//                    loading.dismiss();
+//                }
+//            }));
+
+//            mApiService.loginRequest(username, password)
+//                    .enqueue(new Callback<LoginResponse>() {
+//                        @Override
+//                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+//                            LoginResponse loginResponse = response.body();
+//                            if (response.isSuccessful()){
+//                                loading.dismiss();
+//                                try {
+//                                    JSONObject jsonRESULTS = new JSONObject(response.body().string());
+//                                    if (!jsonRESULTS.getBoolean("error")){
+//                                        // Jika login berhasil maka data nama yang ada di response API
+//                                        // akan diparsing ke activity selanjutnya
+//                                        Toast.makeText(mContext, jsonRESULTS.getString("message"), Toast.LENGTH_LONG).show();
+//
+//                                        // set shared preferences
+//                                        sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+//
+////                                        String nama = jsonRESULTS.getJSONObject("data").getString("nama");
+//                                        Intent intent = new Intent(mContext, DashboardActivity.class);
+//                                        startActivity(intent);
+//                                        finish();
+//                                    } else {
+//                                        // Jika login gagal
+//                                        String error_message = jsonRESULTS.getString("message");
+//                                        Toast.makeText(mContext, error_message, Toast.LENGTH_SHORT).show();
+//                                    }
+//                                } catch (IOException | JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            } else {
+//                                loading.dismiss();
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+//                            Log.e("debug", "onFailure: ERROR > " + t.toString());
+//                            loading.dismiss();
+//                        }
+//                    });
         }
 
 
