@@ -31,18 +31,18 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    public void saveUser(int nim, String username, String password, String nama, String jabatan, String noWa, String noHP, String idLine, String foto, String prodi, String nim_pengurus) {
+    public void saveUser(int nim, String username, String password, String nama, String noWa, String noHP, String idLine, String foto, String prodi) {
         spEditor.putInt("nim", nim);
         spEditor.putString("username", username);
         spEditor.putString("password", password);
         spEditor.putString("nama", nama);
-        spEditor.putString("jabatan", jabatan);
+//        spEditor.putString("jabatan", jabatan);
         spEditor.putString("noWa", noWa);
         spEditor.putString("noHP", noHP);
         spEditor.putString("idLine", idLine);
         spEditor.putString("foto", foto);
         spEditor.putString("prodi", prodi);
-        spEditor.putString("nim_pengurus", nim_pengurus);
+//        spEditor.putString("nim_pengurus", nim_pengurus);
 
 //        spEditor.putInt("nim", user.getNim());
 //        spEditor.putString("username", user.getUsername());

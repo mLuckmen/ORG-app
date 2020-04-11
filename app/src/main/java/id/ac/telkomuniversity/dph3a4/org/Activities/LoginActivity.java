@@ -11,15 +11,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.BaseApiService;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
@@ -133,18 +129,18 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                 String username = userdata.getString("username");
                                 String password = userdata.getString("password");
                                 String nama = userdata.getString("nama");
-                                String jabatan = userdata.getString("jabatan");
+//                                String jabatan = userdata.getString("jabatan");
                                 String noWA = userdata.getString("noWA");
                                 String noHP = userdata.getString("noHP");
                                 String idLine = userdata.getString("idLine");
                                 String foto = userdata.getString("foto");
                                 String prodi = userdata.getString("prodi");
-                                String nim_pengurus = userdata.getString("nim_pengurus");
+//                                String nim_pengurus = userdata.getString("nim_pengurus");
 
 //                                Toast.makeText(mContext, data.getString("message"), Toast.LENGTH_LONG).show();
 
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
-                                sharedPrefManager.saveUser(nim, username, password, nama, jabatan, noWA, noHP, idLine, foto, prodi, nim_pengurus);
+                                sharedPrefManager.saveUser(nim, username, password, nama, noWA, noHP, idLine, foto, prodi);
 
                                 Intent intent = new Intent(mContext, DashboardActivity.class)
                                         .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
