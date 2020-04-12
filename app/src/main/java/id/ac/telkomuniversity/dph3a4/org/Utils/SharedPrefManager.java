@@ -31,12 +31,12 @@ public class SharedPrefManager {
         return mInstance;
     }
 
-    public void saveUser(int nim, String username, String password, String nama, String noWa, String noHP, String idLine, String foto, String prodi) {
+    public void saveUser(int nim, String username, String password, String nama, String noWA, String noHP, String idLine, String foto, String prodi) {
         spEditor.putInt("nim", nim);
         spEditor.putString("username", username);
         spEditor.putString("password", password);
         spEditor.putString("nama", nama);
-        spEditor.putString("noWa", noWa);
+        spEditor.putString("noWA", noWA);
         spEditor.putString("noHP", noHP);
         spEditor.putString("idLine", idLine);
         spEditor.putString("foto", foto);

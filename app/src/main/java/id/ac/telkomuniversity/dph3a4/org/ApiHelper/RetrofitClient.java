@@ -14,7 +14,7 @@ public class RetrofitClient {
 //    public static final String BASE_URL = "http://192.168.137.1/pa/index.php/api/";
 
     //    192.168.1.5 ---> IP Wifi rumah (KenariTony_plus)
-//    private static final String BASE_URL = "http://192.168.1.5/pa/index.php/api/";
+//    private static final String BASE_URL = "http://192.168.1.9/pa/index.php/api/";
 
     private static RetrofitClient mInstance;
     private static Retrofit retrofit;

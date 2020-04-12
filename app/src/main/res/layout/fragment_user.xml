@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
                 android:src="@drawable/foto_profil" />
 
             <TextView
-                android:id="@+id/nama_user"
+                android:id="@+id/etNama"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -48,16 +48,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:orientation="vertical"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:orientation="vertical">
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/lato_bold"
                     android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/lato_bold"
                     android:text="INFORMASI MAHASISWA"
                     android:textColor="@color/Black1"
                     android:textSize="14sp" />
@@ -74,6 +74,7 @@
                         android:fontFamily="@font/lato"
                         android:text="Nomer Induk Mahasiswa"
                         android:textSize="14sp" />
+
                     <EditText
                         android:id="@+id/etNim"
                         android:layout_width="match_parent"
@@ -94,6 +95,7 @@
                         android:fontFamily="@font/lato"
                         android:text="Program Studi"
                         android:textSize="14sp" />
+
                     <EditText
                         android:id="@+id/etProdi"
                         android:layout_width="match_parent"
@@ -109,10 +111,10 @@
             android:id="@+id/container2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/container1"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:layout_below="@id/container1"
             app:cardCornerRadius="12dp"
             app:cardElevation="8dp">
 
@@ -120,16 +122,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:orientation="vertical"
                 android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:orientation="vertical">
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/lato_bold"
                     android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/lato_bold"
                     android:text="KONTAK MAHASISWA"
                     android:textColor="@color/Black1"
                     android:textSize="14sp" />
@@ -146,6 +148,7 @@
                         android:fontFamily="@font/lato"
                         android:text="No Handphone"
                         android:textSize="14sp" />
+
                     <EditText
                         android:id="@+id/etHP"
                         android:layout_width="match_parent"
@@ -166,6 +169,7 @@
                         android:fontFamily="@font/lato"
                         android:text="No WhatsApp"
                         android:textSize="14sp" />
+
                     <EditText
                         android:id="@+id/etWa"
                         android:layout_width="match_parent"
@@ -186,12 +190,15 @@
                         android:fontFamily="@font/lato"
                         android:text="ID Line"
                         android:textSize="14sp" />
+
                     <EditText
                         android:id="@+id/etIDline"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:clickable="false"
+                        android:cursorVisible="false"
                         android:focusable="false"
-                        android:text="field_noWA" />
+                        android:text="field_IDLine" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -200,14 +207,14 @@
         <Button
             android:id="@+id/btnLogout"
             style="@style/ButtonSecondary"
-            android:layout_height="56dp"
             android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@id/container2"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginTop="16dp"
             android:text="KELUAR AKUN"
-            android:layout_below="@id/container2"
             android:textColor="@color/RedPrimary" />
     </RelativeLayout>
 

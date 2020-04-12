@@ -158,6 +158,7 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Log.e("debug", "onFailure: ERROR > " + t.toString());
+                    Toast.makeText(mContext, t.toString(), Toast.LENGTH_LONG).show();
                     loading.dismiss();
                 }
             });
