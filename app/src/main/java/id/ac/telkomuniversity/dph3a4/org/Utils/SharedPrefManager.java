@@ -36,29 +36,13 @@ public class SharedPrefManager {
         spEditor.putString("username", username);
         spEditor.putString("password", password);
         spEditor.putString("nama", nama);
-//        spEditor.putString("jabatan", jabatan);
         spEditor.putString("noWa", noWa);
         spEditor.putString("noHP", noHP);
         spEditor.putString("idLine", idLine);
         spEditor.putString("foto", foto);
         spEditor.putString("prodi", prodi);
-//        spEditor.putString("nim_pengurus", nim_pengurus);
-
-//        spEditor.putInt("nim", user.getNim());
-//        spEditor.putString("username", user.getUsername());
-//        spEditor.putString("password", user.getPassword());
-//        spEditor.putString("nama", user.getNama());
-//        spEditor.putString("jabatan", user.getJabatan());
-//        spEditor.putString("noWa", user.getNoWA());
-//        spEditor.putString("noHP", user.getNoHP());
-//        spEditor.putString("idLine", user.getIdLine());
-//        spEditor.putString("foto", user.getFoto());
-//        spEditor.putString("prodi", user.getProdi());
-//        spEditor.putString("nim_pengurus", user.getNim_pengurus());
-
 
         spEditor.apply();
-
     }
 
     public boolean isLoggedIn() {

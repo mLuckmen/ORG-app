@@ -129,13 +129,11 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                                 String username = userdata.getString("username");
                                 String password = userdata.getString("password");
                                 String nama = userdata.getString("nama");
-//                                String jabatan = userdata.getString("jabatan");
                                 String noWA = userdata.getString("noWA");
                                 String noHP = userdata.getString("noHP");
                                 String idLine = userdata.getString("idLine");
                                 String foto = userdata.getString("foto");
                                 String prodi = userdata.getString("prodi");
-//                                String nim_pengurus = userdata.getString("nim_pengurus");
 
 //                                Toast.makeText(mContext, data.getString("message"), Toast.LENGTH_LONG).show();
 
@@ -163,41 +161,6 @@ public class LoginActivity extends AppCompatActivity  implements View.OnClickLis
                     loading.dismiss();
                 }
             });
-
-//            Call<LoginResponse> call = RetrofitClient.getInstance().getApi().loginRequest(username, password);
-//
-//            call.enqueue((new Callback<LoginResponse>() {
-//                @Override
-//                public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-//                    LoginResponse loginResponse = response.body();
-//
-////                    int nim = loginResponse.getUser().getNim();
-//                    String nama = loginResponse.getUser().getNama();
-//
-//                    Log.d("LOGIN", "nim = " + ", nama = " + nama);
-//
-//                    if (!loginResponse.isError()) {
-//                        loading.dismiss();
-//
-//                        SharedPrefManager.getInstance(mContext).saveUser(loginResponse.getUser());
-//
-//                        Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_LONG).show();
-//
-//                        Intent intent = new Intent(mContext, DashboardActivity.class)
-//                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        startActivity(intent);
-//                    } else {
-//                        loading.dismiss();
-//                        Toast.makeText(mContext, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//
-//                @Override
-//                public void onFailure(Call<LoginResponse> call, Throwable t) {
-//                    Log.e("debug", "onFailure: ERROR > " + t.toString());
-//                    loading.dismiss();
-//                }
-//            }));
 
 //            mApiService.loginRequest(username, password)
 //                    .enqueue(new Callback<LoginResponse>() {

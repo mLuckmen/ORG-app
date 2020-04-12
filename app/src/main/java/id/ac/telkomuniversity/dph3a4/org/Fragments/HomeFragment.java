@@ -1,5 +1,7 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.LayoutInflater;
@@ -8,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,12 +20,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import id.ac.telkomuniversity.dph3a4.org.R;
+import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 
 
 public class HomeFragment extends Fragment {
 
+    String nama;
+    TextView headerNama;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        SharedPreferences sf = getActivity().getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
+        nama = sf.getString("nama","");
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -38,6 +47,10 @@ public class HomeFragment extends Fragment {
         Toolbar mainToolbar = rootView.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(mainToolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // init Component
+        headerNama = rootView.findViewById(R.id.tvNamaUser);
+        headerNama.setText(nama);
 
         return rootView;
     }
