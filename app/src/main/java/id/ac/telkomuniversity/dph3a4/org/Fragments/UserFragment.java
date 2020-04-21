@@ -3,17 +3,21 @@ package id.ac.telkomuniversity.dph3a4.org.Fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.squareup.picasso.Picasso;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.LoginActivity;
 import id.ac.telkomuniversity.dph3a4.org.R;
@@ -28,6 +32,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
     int nim;
     String nama, prodi, noWA, noHP, foto, idLine;
     TextView etNim, etNama, etProdi, etNoWA, etNoHP, etIDline;
+    ImageView foto_profil;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +44,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         noWA = sf.getString("noWA", "");
         noHP = sf.getString("noHP", "");
         idLine = sf.getString("idLine", "");
+        foto = sf.getString("foto", "");
 
         super.onCreate(savedInstanceState);
 
@@ -56,6 +62,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         etNoHP = rootView.findViewById(R.id.etHP);
         etNoWA = rootView.findViewById(R.id.etWa);
         etIDline = rootView.findViewById(R.id.etIDline);
+        foto_profil = rootView.findViewById(R.id.foto_profil);
 
         etNim.setText(String.valueOf(nim));
         etNama.setText(nama);
@@ -64,6 +71,10 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         etNoWA.setText(noWA);
         etIDline.setText(idLine);
 
+        String img_url = "http://10.0.2.2/pa/asset/images/foto/" + foto; // localhost
+//        String img_url = "http://192.168.1.9/pa/asset/images/foto/" + foto; // localhost
+//        String img_url = "http://org-web.ml/pa/asset/images/foto/" + foto; // hosting
+        Picasso.get().load(img_url).into(foto_profil);
 
         btnLogout = rootView.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);
