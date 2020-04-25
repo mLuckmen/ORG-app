@@ -41,8 +41,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="220dp"
             android:layout_marginRight="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,8 +115,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="8dp">
+            app:cardCornerRadius="10dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
