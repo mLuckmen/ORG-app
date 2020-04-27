@@ -72,7 +72,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         etIDline.setText(idLine);
 
         String img_url = "http://10.0.2.2/pa/asset/images/foto/" + foto; // localhost
-//        String img_url = "http://192.168.1.9/pa/asset/images/foto/" + foto; // kenari tony_plus
+//        String img_url = "http://192.168.1.11/pa/asset/images/foto/" + foto; // kenari tony_plus
 //        String img_url = "http://org-web.ml/pa/asset/images/foto/" + foto; // hosting
         Picasso.get().load(img_url).into(foto_profil);
 

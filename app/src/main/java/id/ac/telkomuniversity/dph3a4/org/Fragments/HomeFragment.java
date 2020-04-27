@@ -3,13 +3,13 @@ package id.ac.telkomuniversity.dph3a4.org.Fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,51 +19,39 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import id.ac.telkomuniversity.dph3a4.org.Activities.DashboardActivity;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
-import id.ac.telkomuniversity.dph3a4.org.Model.DataItem;
-import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationModel;
+import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.R;
-import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener{
 
     String nama;
-    TextView headerNama;
-    List<DataItem> dataOrganisasi = new ArrayList<>();
+    TextView headerNama, tvLihatOrganisasi, tvLihatAgenda, tvLihatKegiatan;
+    List<OrganisationItem> dataOrganisasi = new ArrayList<>();
     RecyclerView recycler;
     SharedPreferences sf;
+    BottomNavigationView bottomNavigationView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         sf = getActivity().getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
         nama = sf.getString("nama","");
-
-        // layout per item
-        // model data
-        // adapter
-        // layout manager
-
-//        OrganisationModel organisasi1 = new OrganisationModel();
-//        organisasi1.setIdOrganisasi(123);
-//        organisasi1.setNamaOrganisasi("HMDSI");
-//        organisasi1.setDeskripsi("Himpunan Mahasiswa Diploma Sistem Informasi");
-//        organisasi1.setKetua("Kelvin");
-//        organisasi1.setLogo("https://ketringan.com/assets/img/partner/hmdsi.jpg");
-//
-//        for (int i = 0; i < 10; i++) {
-//            dataOrganisasi.add(organisasi1);
-//        }
 
         getDataOnline();
 
@@ -103,13 +91,21 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // init Component
+        tvLihatOrganisasi = rootView.findViewById(R.id.tvLihatOrganisasi);
+        tvLihatAgenda = rootView.findViewById(R.id.tvLihatAgenda);
+        tvLihatKegiatan = rootView.findViewById(R.id.tvLihatKegiatan);
         headerNama = rootView.findViewById(R.id.tvNamaUser);
+        bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
+
+        tvLihatOrganisasi.setOnClickListener(this);
+        tvLihatAgenda.setOnClickListener(this);
+        tvLihatKegiatan.setOnClickListener(this);
         headerNama.setText(nama);
         recycler = rootView.findViewById(R.id.rvOrganisasi);
 
         // set Adapter
         recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
-        recycler.setLayoutManager(new GridLayoutManager(getActivity(), 1));
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         return rootView;
     }
@@ -128,9 +124,32 @@ public class HomeFragment extends Fragment {
             case R.id.action_notification:
                 Toast.makeText(getActivity(), "Notification Clicked", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.tvLihatOrganisasi:
+
+            case R.id.tvLihatAgenda:
+
+                return true;
+            case R.id.tvLihatKegiatan:
             default:
                 return super.onOptionsItemSelected(item);
 
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        Fragment selectedFragment = null;
+        switch (view.getId()) {
+            case R.id.tvLihatOrganisasi:
+
+                break;
+            case R.id.tvLihatAgenda:
+                bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
+                break;
+            case R.id.tvLihatKegiatan:
+                selectedFragment = new EventFragment();
+                bottomNavigationView.setSelectedItemId(R.id.nav_event);
+                break;
         }
     }
 
