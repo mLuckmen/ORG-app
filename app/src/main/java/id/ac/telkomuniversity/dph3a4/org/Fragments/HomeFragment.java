@@ -1,5 +1,6 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -60,10 +61,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
 
     private void getDataOnline() {
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Mengambil data dari server");
+        progressDialog.show();
+
         Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));
         request.enqueue(new Callback<ResponseOrganisation>() {
             @Override
             public void onResponse(Call<ResponseOrganisation> call, Response<ResponseOrganisation> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()){
                     dataOrganisasi = response.body().getData();
                     recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
@@ -74,6 +80,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onFailure(Call<ResponseOrganisation> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getContext(), "Request failure", Toast.LENGTH_LONG).show();
             }
         });
@@ -96,12 +103,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tvLihatKegiatan = rootView.findViewById(R.id.tvLihatKegiatan);
         headerNama = rootView.findViewById(R.id.tvNamaUser);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
+        recycler = rootView.findViewById(R.id.rvOrganisasi);
 
         tvLihatOrganisasi.setOnClickListener(this);
         tvLihatAgenda.setOnClickListener(this);
         tvLihatKegiatan.setOnClickListener(this);
         headerNama.setText(nama);
-        recycler = rootView.findViewById(R.id.rvOrganisasi);
 
         // set Adapter
         recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
@@ -124,12 +131,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             case R.id.action_notification:
                 Toast.makeText(getActivity(), "Notification Clicked", Toast.LENGTH_SHORT).show();
                 return true;
-            case R.id.tvLihatOrganisasi:
-
-            case R.id.tvLihatAgenda:
-
-                return true;
-            case R.id.tvLihatKegiatan:
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -138,16 +139,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View view) {
-        Fragment selectedFragment = null;
         switch (view.getId()) {
             case R.id.tvLihatOrganisasi:
-
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListOrganisasiFragment()).addToBackStack("organisasi").commit();
                 break;
             case R.id.tvLihatAgenda:
                 bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
                 break;
             case R.id.tvLihatKegiatan:
-                selectedFragment = new EventFragment();
                 bottomNavigationView.setSelectedItemId(R.id.nav_event);
                 break;
         }

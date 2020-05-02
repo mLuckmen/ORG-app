@@ -12,11 +12,11 @@ import androidx.fragment.app.Fragment;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
 
-public class EventFragment extends Fragment {
+public class KegiatanFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_event, container, false);
+        return inflater.inflate(R.layout.fragment_kegiatan, container, false);
     }
 }

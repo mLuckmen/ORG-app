@@ -23,15 +23,15 @@ import id.ac.telkomuniversity.dph3a4.org.Activities.OrganisationActivity;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
-public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapter.MyViewHolder> {
-    public static final String DATA_ORGANISASI = "dataOrganisasi";
+public class OrganisationAdapter2 extends RecyclerView.Adapter<OrganisationAdapter2.MyViewHolder> {
+    private static final String DATA_ORGANISASI = "dataOrganisasi";
     public static final String DATA_EXTRA = "dataExtra";
     private Context context;
     private List<OrganisationItem> dataOrganisasi = new ArrayList<>();
 
     // Constructor
 
-    public OrganisationAdapter(Context context, List<OrganisationItem> dataOrganisasi) {
+    public OrganisationAdapter2(Context context, List<OrganisationItem> dataOrganisasi) {
         this.context = context;
         this.dataOrganisasi = dataOrganisasi;
     }
@@ -40,7 +40,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
-        View itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_organisasi, viewGroup,false);
+        View itemView = LayoutInflater.from(context).inflate(R.layout.layout_item_organisasi_2, viewGroup,false);
         return new MyViewHolder(itemView);
     }
 
@@ -48,7 +48,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.tvNamaOrganisasi.setText(dataOrganisasi.get(position).getNamaOrganisasi());
-//        holder.tvDeskripsi.setText(dataOrganisasi.get(position).getDeskripsi());
+        holder.tvDeskripsi.setText(dataOrganisasi.get(position).getDeskripsi());
         holder.tvKetua.setText(dataOrganisasi.get(position).getKetua());
         Glide.with(context).load("http://10.0.2.2/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo()).into(holder.ivLogo);
 //        Glide.with(context).load("http://192.168.1.11/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo()).into(holder.ivLogo);
@@ -79,7 +79,7 @@ public class OrganisationAdapter extends RecyclerView.Adapter<OrganisationAdapte
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNamaOrganisasi = itemView.findViewById(R.id.tvNamaOrganisasi);
-//            tvDeskripsi = itemView.findViewById(R.id.tvDescOrg);
+            tvDeskripsi = itemView.findViewById(R.id.tvDescOrg);
             tvKetua = itemView.findViewById(R.id.tvNamaKetua);
             ivLogo = itemView.findViewById(R.id.logoOrganisasi);
 

@@ -17,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.squareup.picasso.Picasso;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.LoginActivity;
@@ -74,7 +77,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         String img_url = "http://10.0.2.2/pa/asset/images/foto/" + foto; // localhost
 //        String img_url = "http://192.168.1.11/pa/asset/images/foto/" + foto; // kenari tony_plus
 //        String img_url = "http://org-web.ml/pa/asset/images/foto/" + foto; // hosting
-        Picasso.get().load(img_url).into(foto_profil);
+        Glide.with(getContext()).load(img_url).apply(RequestOptions.bitmapTransform(new RoundedCorners(8))).into(foto_profil);
 
         btnLogout = rootView.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
 
-public class CalendarFragment extends Fragment {
+public class AgendaFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

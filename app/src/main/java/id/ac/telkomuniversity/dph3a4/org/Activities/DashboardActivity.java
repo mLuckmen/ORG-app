@@ -5,18 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
-import id.ac.telkomuniversity.dph3a4.org.Fragments.CalendarFragment;
-import id.ac.telkomuniversity.dph3a4.org.Fragments.EventFragment;
+import id.ac.telkomuniversity.dph3a4.org.Fragments.AgendaFragment;
+import id.ac.telkomuniversity.dph3a4.org.Fragments.KegiatanFragment;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.HomeFragment;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.UserFragment;
 import id.ac.telkomuniversity.dph3a4.org.R;
@@ -67,10 +63,10 @@ public class DashboardActivity extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_calendar:
-                            selectedFragment = new CalendarFragment();
+                            selectedFragment = new AgendaFragment();
                             break;
                         case R.id.nav_event:
-                            selectedFragment = new EventFragment();
+                            selectedFragment = new KegiatanFragment();
                             break;
                         case R.id.nav_account:
                             selectedFragment = new UserFragment();

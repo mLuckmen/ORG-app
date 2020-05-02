@@ -140,7 +140,7 @@
                 android:layout_below="@id/agendaHeader"
                 android:layout_margin="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="6dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
