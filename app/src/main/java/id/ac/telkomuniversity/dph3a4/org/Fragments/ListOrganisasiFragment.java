@@ -56,7 +56,6 @@ public class ListOrganisasiFragment extends Fragment {
     }
 
     private void getDataOnline() {
-//        Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));
         Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));
         request.enqueue(new Callback<ResponseOrganisation>() {
             @Override

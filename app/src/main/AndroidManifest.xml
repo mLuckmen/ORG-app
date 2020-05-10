@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.OrganisationActivity"></activity>
+        <activity android:name=".Activities.DetailOrganisasiActivity"></activity>
+        <activity android:name=".Activities.OrganisationActivity" />
         <activity android:name=".Activities.DashboardActivity" />
         <activity android:name=".Activities.OnboardingActivity" />
         <activity android:name=".Activities.LoginActivity" />

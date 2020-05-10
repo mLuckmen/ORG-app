@@ -25,6 +25,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 tools:srcCompat="@tools:sample/avatars[0]" />
+
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

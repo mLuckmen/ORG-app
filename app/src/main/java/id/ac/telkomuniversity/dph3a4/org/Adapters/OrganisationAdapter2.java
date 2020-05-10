@@ -50,8 +50,10 @@ public class OrganisationAdapter2 extends RecyclerView.Adapter<OrganisationAdapt
         holder.tvNamaOrganisasi.setText(dataOrganisasi.get(position).getNamaOrganisasi());
         holder.tvDeskripsi.setText(dataOrganisasi.get(position).getDeskripsi());
         holder.tvKetua.setText(dataOrganisasi.get(position).getKetua());
-        Glide.with(context).load("http://10.0.2.2/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo()).into(holder.ivLogo);
-//        Glide.with(context).load("http://192.168.1.11/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo()).into(holder.ivLogo);
+
+        String img_url = "http://10.0.2.2/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo();
+//        String img_url = "http://192.168.1.11/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo();
+        Glide.with(context).load(img_url).into(holder.ivLogo);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
