@@ -30,7 +30,6 @@ public class OrganisationAdapter2 extends RecyclerView.Adapter<OrganisationAdapt
     private List<OrganisationItem> dataOrganisasi = new ArrayList<>();
 
     // Constructor
-
     public OrganisationAdapter2(Context context, List<OrganisationItem> dataOrganisasi) {
         this.context = context;
         this.dataOrganisasi = dataOrganisasi;

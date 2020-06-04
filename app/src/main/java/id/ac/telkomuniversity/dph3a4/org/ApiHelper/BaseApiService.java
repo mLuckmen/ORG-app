@@ -1,6 +1,7 @@
 package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePengurus;
 import okhttp3.ResponseBody;
@@ -32,5 +33,10 @@ public interface BaseApiService {
     @GET("organisasi/anggota")
     Call<ResponseAnggota> getAnggota(
             @Query("idOrganisasi") String idOrganisasi
+    );
+
+    @GET("kegiatan/showKegiatan")
+    Call<ResponseKegiatan> showKegiatan(
+
     );
 }

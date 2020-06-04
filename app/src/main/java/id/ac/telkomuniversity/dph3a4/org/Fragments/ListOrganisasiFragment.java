@@ -49,8 +49,8 @@ public class ListOrganisasiFragment extends Fragment {
 
         recyclerView = rootview.findViewById(R.id.recyclerViewListOrganisasi);
 
-        recyclerView.setAdapter(new OrganisationAdapter2(getActivity(), dataOrganisasi));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setAdapter(new OrganisationAdapter2(getContext(), dataOrganisasi));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         return rootview;
     }
