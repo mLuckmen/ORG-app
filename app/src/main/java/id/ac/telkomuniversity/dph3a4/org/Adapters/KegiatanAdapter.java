@@ -13,11 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-
 import org.parceler.Parcels;
 
-import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -102,8 +99,8 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
             tvTempatPelaksanaan = itemView.findViewById(R.id.tvTempatPelaksanaan);
             ivPosterKegiatan = itemView.findViewById(R.id.ivPosterKegiatan);
             tvHargaTiket = itemView.findViewById(R.id.tvHargaTiket);
-            btnDaftar = itemView.findViewById(R.id.btnDaftar);
+            btnDaftar = itemView.findViewById(R.id.btnPesan1);
         }
     }
-    
+
 }

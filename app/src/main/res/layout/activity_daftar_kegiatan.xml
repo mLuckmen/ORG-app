@@ -115,6 +115,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/namaPendaftar"
                     style="@style/InputField"
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
@@ -138,6 +139,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/nimPendaftar"
                     style="@style/InputField"
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
@@ -161,6 +163,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/jurusanPendaftar"
                     style="@style/InputField"
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
@@ -184,6 +187,7 @@
                     android:textSize="14sp" />
 
                 <EditText
+                    android:id="@+id/emailPendaftar"
                     style="@style/InputField"
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
@@ -237,7 +241,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnPesan"
+                android:id="@+id/btnPesan2"
                 style="@style/ButtonPrimary"
                 android:layout_width="match_parent"
                 android:layout_margin="16dp"

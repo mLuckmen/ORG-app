@@ -4,6 +4,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePengurus;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -36,7 +37,18 @@ public interface BaseApiService {
     );
 
     @GET("kegiatan/showKegiatan")
-    Call<ResponseKegiatan> showKegiatan(
+    Call<ResponseKegiatan> showKegiatan();
 
+    @POST("kegiatan/daftarKegiatan")
+    Call<ResponsePesanTiket> daftarKegiatan(
+            @Field("nama") String nama,
+            @Field("nim") String nim,
+            @Field("jurusan") String jurusan,
+            @Field("email") String email,
+            @Field("jumlah") String jumlah,
+            @Field("total") String total,
+            @Field("metode_pembayaran") String metode_pembayaran,
+            @Field("status") String status,
+            @Field("id_kegiatan") String id_kegiatan
     );
 }

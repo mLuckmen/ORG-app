@@ -68,7 +68,7 @@
                     android:textSize="14sp" />
 
                 <Button
-                    android:id="@+id/btnDaftar"
+                    android:id="@+id/btnPesan1"
                     style="@style/ButtonPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
