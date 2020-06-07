@@ -21,5 +21,15 @@
         <item name="android:fontFamily">@font/lato_bold</item>
         <item name="android:textSize">14sp</item>
     </style>
+    
+    <style name="InputField" parent="Widget.AppCompat.EditText">
+        <item name="android:layout_height">48dp</item>
+        <item name="android:background">@drawable/background_edittext</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="fontFamily">@font/lato</item>
+        <item name="android:textSize">16dp</item>
+        <item name="android:textColor">@color/Black1</item>
+    </style>
 
 </resources>

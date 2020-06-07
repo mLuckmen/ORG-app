@@ -24,7 +24,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
 public class OrganisationAdapter2 extends RecyclerView.Adapter<OrganisationAdapter2.MyViewHolder> {
-    private static final String DATA_ORGANISASI = "dataOrganisasi";
+    public static final String DATA_ORGANISASI = "dataOrganisasi";
     public static final String DATA_EXTRA = "dataExtra";
     private Context context;
     private List<OrganisationItem> dataOrganisasi = new ArrayList<>();

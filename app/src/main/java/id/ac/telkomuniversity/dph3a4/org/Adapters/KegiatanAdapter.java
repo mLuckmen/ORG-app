@@ -1,6 +1,8 @@
 package id.ac.telkomuniversity.dph3a4.org.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.parceler.Parcels;
+
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,11 +25,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import id.ac.telkomuniversity.dph3a4.org.Activities.DaftarKegiatanActivity;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
 public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyViewHolder> {
-    private static final String DATA_KEGIATAN = "dataKegiatan";
+    public static final String DATA_KEGIATAN = "dataKegiatan";
     public static final String DATA_EXTRA = "dataExtra";
     private Context context;
     private List<KegiatanItem> dataKegiatan = new ArrayList<>();
@@ -47,13 +52,36 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
     // 3 set data
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+        String pattern = "EEEE, d MMMM yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("id", "ID"));
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(dataKegiatan.get(position).getWaktu());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String tanggalKegiatan = simpleDateFormat.format(date);
+
         holder.tvNamaKegiatan.setText(dataKegiatan.get(position).getNamaKegiatan());
-        holder.tvTanggalPelaksanaan.setText(dataKegiatan.get(position).getWaktu());
+        holder.tvTanggalPelaksanaan.setText(tanggalKegiatan);
         holder.tvTempatPelaksanaan.setText(dataKegiatan.get(position).getTempat());
+        holder.tvHargaTiket.setText("Harga tiket : Rp." + dataKegiatan.get(position).getHarga());
 
-        String img_url = "http://10.0.2.2/pa/asset/images/" + dataKegiatan.get(position).getFoto();
+        if (dataKegiatan.get(position).getFoto() != "") {
+            String img_url = "http://10.0.2.2/pa/asset/images/" + dataKegiatan.get(position).getFoto();
+//            Glide.with(context).load(img_url).into(holder.ivPosterKegiatan);
+        }
 
-//        Glide.with(context).load(img_url).into(holder.ivPosterKegiatan);
+        holder.btnDaftar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pindah = new Intent(context, DaftarKegiatanActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DATA_KEGIATAN, Parcels.wrap(dataKegiatan.get(position)));
+                pindah.putExtra(DATA_EXTRA, bundle);
+                context.startActivity(pindah);
+            }
+        });
 
     }
 
@@ -64,7 +92,7 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPosterKegiatan;
-        TextView tvNamaKegiatan, tvTanggalPelaksanaan, tvTempatPelaksanaan;
+        TextView tvNamaKegiatan, tvTanggalPelaksanaan, tvTempatPelaksanaan, tvHargaTiket;
         Button btnDaftar;
 
         public MyViewHolder(@NonNull View itemView) {
@@ -73,24 +101,9 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
             tvTanggalPelaksanaan = itemView.findViewById(R.id.tvTanggalPelaksanaan);
             tvTempatPelaksanaan = itemView.findViewById(R.id.tvTempatPelaksanaan);
             ivPosterKegiatan = itemView.findViewById(R.id.ivPosterKegiatan);
+            tvHargaTiket = itemView.findViewById(R.id.tvHargaTiket);
+            btnDaftar = itemView.findViewById(R.id.btnDaftar);
         }
     }
-
-//    public String ChangeDateFormat(String tanggal) {
-//        Locale id = new Locale("in", "ID");
-//        String pattern = "EEEE, dd MMMM yyyy";
-//        SimpleDateFormat sdf = new SimpleDateFormat(pattern, id);
-//        DateFormatSymbols dfs = new DateFormatSymbols(id);
-//        String[] days = dfs.getWeekdays();
-//        String newDays[] = new String[days.length];
-//
-//        dfs.setWeekdays(newDays);
-//        String[] longMonth = dfs.getMonths();
-//        String months[] = new String[longMonth.length];
-//
-//        dfs.setMonths(months);
-//        sdf = new SimpleDateFormat(pattern, dfs);
-//        String output = sdf.format(tanggal);
-//        return output;
-//    }
+    
 }

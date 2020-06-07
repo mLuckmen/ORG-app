@@ -41,6 +41,15 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tvTempatPelaksanaan"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/lato"
+                    android:text="Tempat Pelaksanaan"
+                    android:textSize="14sp" />
+
+                <TextView
                     android:id="@+id/tvTanggalPelaksanaan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,12 +59,12 @@
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tvTempatPelaksanaan"
+                    android:id="@+id/tvHargaTiket"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:fontFamily="@font/lato"
-                    android:text="Tempat Pelaksanaan"
+                    android:text="Harga : Rp."
                     android:textSize="14sp" />
 
                 <Button
@@ -64,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:layout_marginTop="8dp"
-                    android:text="Daftar"
+                    android:text="Pesan Tiket"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
