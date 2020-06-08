@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.parceler.Parcels;
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,8 +28,13 @@ import java.util.Locale;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.HintAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.RequiredSpinnerAdapter;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
 import id.ac.telkomuniversity.dph3a4.org.R;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DaftarKegiatanActivity extends AppCompatActivity {
 
@@ -61,6 +69,24 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                spinnerJumlah.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//                    @Override
+//                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                        jumlah = spinnerJumlah.getSelectedItem().toString();
+//                        if (jumlah.equals("1 Orang")) {
+//                            total = dataKegiatan.getHarga();
+//                        } else if (jumlah.equals("2 Orang")) {
+//                            total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
+//                        } else {
+//                            Toast.makeText(DaftarKegiatanActivity.this, "Silahkan pilih jumlah tiket!", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//                    }
+//                });
                 btnPesanAction();
             }
         });
@@ -119,91 +145,76 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         myDialog = new Dialog(this);
     }
 
-    private void daftarKegiatan() {
+    private void submitPesanTiket() {
+        Call<ResponsePesanTiket> request = RetrofitClient.getInstance().getApi().daftarKegiatan(nama, nim, jurusan, email, jumlah, total, metode_pembayaran, status, id_kegiatan);
 
+        request.enqueue(new Callback<ResponsePesanTiket>() {
+            @Override
+            public void onResponse(Call<ResponsePesanTiket> call, Response<ResponsePesanTiket> response) {
+                if (response.isSuccessful()){
+                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
-//        Call<ResponsePesanTiket> request = RetrofitClient.getInstance().getApi().daftarKegiatan()
+            @Override
+            public void onFailure(Call<ResponsePesanTiket> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void btnPesanAction() {
-        nama = namaPendaftar.getText().toString().trim();
-        nim = nimPendaftar.getText().toString().trim();
-        jurusan = jurusanPendaftar.getText().toString().trim();
-        email = emailPendaftar.getText().toString().trim();
+        nama = namaPendaftar.getText().toString();
+        nim = nimPendaftar.getText().toString();
+        jurusan = jurusanPendaftar.getText().toString();
+        email = emailPendaftar.getText().toString();
         status = "Menunggu";
         id_kegiatan = dataKegiatan.getIdKegiatan();
 
-        spinnerJumlah.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (spinnerJumlah.getSelectedItem().toString() == "1 Orang"){
-                    jumlah = "1";
-                    total = dataKegiatan.getHarga();
-                } else if (spinnerJumlah.getSelectedItem().toString() == "2 Orang"){
-                    jumlah = "2";
-                    total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
-                } else if (spinnerJumlah.getSelectedItem().toString().equals("Pilih jumlah tiket")){
-                    Toast.makeText(DaftarKegiatanActivity.this, "Silahkan pilih jumlah tiket!", Toast.LENGTH_SHORT).show();
-                }
-            }
+        jumlah = spinnerJumlah.getSelectedItem().toString();
+        if (jumlah.equals("1 Orang")) {
+            total = dataKegiatan.getHarga();
+        } else if (jumlah.equals("2 Orang")) {
+            total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
+        }
+        metode_pembayaran = spinnerPembayaran.getSelectedItem().toString();
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                RequiredSpinnerAdapter adapter = (RequiredSpinnerAdapter) spinnerJumlah.getAdapter();
-                View view1 = spinnerJumlah.getSelectedView();
-                adapter.setError(view1, "Silahkan pilih jumlah tiket!");
-            }
-        });
-
-        spinnerPembayaran.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                if (spinnerPembayaran.getSelectedItem().toString() != "Pilih metode pembayaran") {
-                    metode_pembayaran = spinnerPembayaran.getSelectedItem().toString();
-                } else if (spinnerPembayaran.getSelectedItem().toString().equals("Pilih metode pembayaran")){
-                    Toast.makeText(DaftarKegiatanActivity.this, "Silahkan pilih metode pembayaran!", Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                RequiredSpinnerAdapter adapter = (RequiredSpinnerAdapter) spinnerPembayaran.getAdapter();
-                View view1 = spinnerPembayaran.getSelectedView();
-                adapter.setError(view1, "Silahkan pilih metode pembayaran!");
-
-
-            }
-        });
         formValidation();
-//            String nama, nim, jurusan, email, jumlah, total, metode_pembayaran, status, id_kegiatan;
     }
 
     public void formValidation() {
-        if (email.isEmpty()){
-            emailPendaftar.setError("Email tidak boleh kosong");
-            emailPendaftar.requestFocus();
-        }
-        if (jurusan.isEmpty()){
-            jurusanPendaftar.setError("Jurusan tidak boleh kosong");
-            jurusanPendaftar.requestFocus();
-        }
-        if (nim.isEmpty()){
-            nimPendaftar.setError("NIM lengkap tidak boleh kosong");
-            nimPendaftar.requestFocus();
-        }
-        if (nama.isEmpty()){
-            namaPendaftar.setError("Nama lengkap tidak boleh kosong");
-            namaPendaftar.requestFocus();
-        }
 
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+        if (TextUtils.isEmpty(emailPendaftar.getText()) ||
+                TextUtils.isEmpty(jurusanPendaftar.getText()) ||
+                TextUtils.isEmpty(nimPendaftar.getText()) ||
+                TextUtils.isEmpty(namaPendaftar.getText()) ) {
+
+            if (TextUtils.isEmpty(emailPendaftar.getText())){
+                emailPendaftar.setError("Email tidak boleh kosong");
+                emailPendaftar.requestFocus();
+            }
+            if (TextUtils.isEmpty(jurusanPendaftar.getText())){
+                jurusanPendaftar.setError("Jurusan tidak boleh kosong");
+                jurusanPendaftar.requestFocus();
+            }
+            if (TextUtils.isEmpty(nimPendaftar.getText())){
+                nimPendaftar.setError("NIM lengkap tidak boleh kosong");
+                nimPendaftar.requestFocus();
+            }
+            if (TextUtils.isEmpty(namaPendaftar.getText())){
+                namaPendaftar.setError("Nama lengkap tidak boleh kosong");
+                namaPendaftar.requestFocus();
+            }
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             emailPendaftar.setError("Format Email belum sesuai");
             emailPendaftar.requestFocus();
-        }
-
-        if (!nama.equals("") && !nim.equals("") && !jurusan.equals("") && !email.equals("") && !jumlah.equals("") && !total.equals("") && !metode_pembayaran.equals("") && !status.equals("") && !id_kegiatan.equals("")) {
+        } else {
             showConfirmationDialog();
         }
+
     }
 
     public void showConfirmationDialog() {
@@ -237,8 +248,6 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         konfirmasi = myDialog.findViewById(R.id.btnKonfirmasiTiket);
         batal = myDialog.findViewById(R.id.btnBatalTiket);
 
-
-
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,7 +263,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         konfirmasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /// method upload
+                submitPesanTiket();
             }
         });
 

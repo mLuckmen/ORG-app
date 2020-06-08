@@ -39,6 +39,7 @@ public interface BaseApiService {
     @GET("kegiatan/showKegiatan")
     Call<ResponseKegiatan> showKegiatan();
 
+    @FormUrlEncoded
     @POST("kegiatan/daftarKegiatan")
     Call<ResponsePesanTiket> daftarKegiatan(
             @Field("nama") String nama,
