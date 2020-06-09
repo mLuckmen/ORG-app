@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     RecyclerView recycler, rvBerita;
     SharedPreferences sf;
     BottomNavigationView bottomNavigationView;
+    Button btnLihatSemuaBerita;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,7 +114,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
         recycler = rootView.findViewById(R.id.rvOrganisasi);
         rvBerita = rootView.findViewById(R.id.rvBerita);
+        btnLihatSemuaBerita = rootView.findViewById(R.id.btnLihatSemuaBerita);
 
+        btnLihatSemuaBerita.setOnClickListener(this);
         tvLihatOrganisasi.setOnClickListener(this);
         tvLihatAgenda.setOnClickListener(this);
         tvLihatKegiatan.setOnClickListener(this);
@@ -159,6 +163,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             case R.id.tvLihatKegiatan:
                 bottomNavigationView.setSelectedItemId(R.id.nav_event);
                 break;
+            case R.id.btnLihatSemuaBerita:
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SemuaBeritaFragment()).addToBackStack("berita").commit();
+                break;
         }
     }
 
@@ -170,6 +177,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 if (response.isSuccessful()){
                     dataBerita = response.body().getBerita();
                     rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+
+//                    if (dataBerita.size() > 5) {
+//                        btnLihatSemuaBerita.setVisibility(View.VISIBLE);
+//                    } else {
+//                        btnLihatSemuaBerita.setVisibility(View.GONE);
+//                    }
                 } else {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                 }

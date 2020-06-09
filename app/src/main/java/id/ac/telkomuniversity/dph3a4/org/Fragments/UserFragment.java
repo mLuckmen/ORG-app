@@ -76,10 +76,12 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         etNoWA.setText(noWA);
         etIDline.setText(idLine);
 
-        String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + foto; // localhost
+        if (!foto.equals("")){
+            String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + foto; // localhost
 //        String img_url = "http://192.168.1.11/pa/asset/images/foto/" + foto; // kenari tony_plus
 //        String img_url = "http://org-web.ml/pa/asset/images/foto/" + foto; // hosting
-        Glide.with(getContext()).load(img_url).into(foto_profil);
+            Glide.with(getContext()).load(img_url).into(foto_profil);
+        }
 
         btnLogout = rootView.findViewById(R.id.btnLogout);
         btnLogout.setOnClickListener(this);

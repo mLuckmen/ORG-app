@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -50,7 +51,11 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return dataBerita.size();
+        if (dataBerita.size() > 5) {
+            return 2;
+        } else {
+            return dataBerita.size();
+        }
     }
 
 

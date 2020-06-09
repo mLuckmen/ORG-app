@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.AgendaFragment;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.KegiatanFragment;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.HomeFragment;
+import id.ac.telkomuniversity.dph3a4.org.Fragments.SemuaBeritaFragment;
 import id.ac.telkomuniversity.dph3a4.org.Fragments.UserFragment;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
@@ -24,6 +25,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     Toolbar mainToolbar;
     BottomNavigationView bottomNav;
+    Fragment selectedFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class DashboardActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    Fragment selectedFragment = null;
+                    selectedFragment = null;
 
                     switch (item.getItemId()) {
                         case R.id.nav_home:
