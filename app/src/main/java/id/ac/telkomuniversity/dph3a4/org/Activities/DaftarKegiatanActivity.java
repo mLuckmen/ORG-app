@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
 import org.parceler.Parcels;
 import org.w3c.dom.Text;
 
@@ -69,24 +71,6 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                spinnerJumlah.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                    @Override
-//                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                        jumlah = spinnerJumlah.getSelectedItem().toString();
-//                        if (jumlah.equals("1 Orang")) {
-//                            total = dataKegiatan.getHarga();
-//                        } else if (jumlah.equals("2 Orang")) {
-//                            total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
-//                        } else {
-//                            Toast.makeText(DaftarKegiatanActivity.this, "Silahkan pilih jumlah tiket!", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//                    }
-//                });
                 btnPesanAction();
             }
         });
@@ -109,7 +93,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         tempatPelaksanaan.setText(dataKegiatan.getTempat());
         harga.setText("Harga Tiket : Rp." + dataKegiatan.getHarga());
 
-        String img_url = "http://10.0.2.2/pa/asset/images/ormawa/" + dataKegiatan.getFoto();
+        String img_url = RetrofitClient.IP_URL + "asset/images/ormawa/" + dataKegiatan.getFoto();
 //        Glide.with(context).load(img_url).into(posterKegiatan);
     }
 
@@ -152,9 +136,12 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponsePesanTiket> call, Response<ResponsePesanTiket> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    Intent pindah = new Intent(context, TiketSuccessActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(pindah);
                 } else {
-                    Toast.makeText(context, response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -177,8 +164,10 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         jumlah = spinnerJumlah.getSelectedItem().toString();
         if (jumlah.equals("1 Orang")) {
             total = dataKegiatan.getHarga();
+            jumlah = "1";
         } else if (jumlah.equals("2 Orang")) {
             total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
+            jumlah = "2";
         }
         metode_pembayaran = spinnerPembayaran.getSelectedItem().toString();
 

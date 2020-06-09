@@ -252,6 +252,49 @@
 
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvKegiatan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/kegiatanHeader"
+                android:layout_margin="16dp"/>
+
+            <LinearLayout
+                android:id="@+id/beritaHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rvKegiatan"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/lato_bold"
+                    android:text="Berita Terbaru"
+                    android:textColor="@color/Black1"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tvLihatBerita"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:text="Lihat Semua"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="16dp"
+                android:id="@+id/rvBerita"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/beritaHeader"/>
+
         </RelativeLayout>
     </ScrollView>
 

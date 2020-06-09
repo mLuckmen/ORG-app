@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,9 +31,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.DashboardActivity;
+import id.ac.telkomuniversity.dph3a4.org.Adapters.BeritaAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
+import id.ac.telkomuniversity.dph3a4.org.Model.BeritaItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import retrofit2.Call;
@@ -45,7 +49,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     String nama;
     TextView headerNama, tvLihatOrganisasi, tvLihatAgenda, tvLihatKegiatan;
     List<OrganisationItem> dataOrganisasi = new ArrayList<>();
-    RecyclerView recycler;
+    List<BeritaItem> dataBerita = new ArrayList<>();
+    RecyclerView recycler, rvBerita;
     SharedPreferences sf;
     BottomNavigationView bottomNavigationView;
 
@@ -55,6 +60,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         nama = sf.getString("nama","");
 
         getDataOnline();
+        getDataBerita();
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -81,7 +87,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onFailure(Call<ResponseOrganisation> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(getContext(), "Request failure", Toast.LENGTH_LONG).show();
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -104,6 +111,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         headerNama = rootView.findViewById(R.id.tvNamaUser);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
         recycler = rootView.findViewById(R.id.rvOrganisasi);
+        rvBerita = rootView.findViewById(R.id.rvBerita);
 
         tvLihatOrganisasi.setOnClickListener(this);
         tvLihatAgenda.setOnClickListener(this);
@@ -113,6 +121,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // set Adapter
         recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+        rvBerita.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
 
         return rootView;
     }
@@ -152,4 +162,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    private void getDataBerita() {
+        Call<ResponseBerita> request = RetrofitClient.getInstance().getApi().getAllBerita();
+        request.enqueue(new Callback<ResponseBerita>() {
+            @Override
+            public void onResponse(Call<ResponseBerita> call, Response<ResponseBerita> response) {
+                if (response.isSuccessful()){
+                    dataBerita = response.body().getBerita();
+                    rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+                } else {
+                    Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBerita> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 }

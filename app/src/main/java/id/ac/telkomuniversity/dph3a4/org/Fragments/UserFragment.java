@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
@@ -24,6 +25,7 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import id.ac.telkomuniversity.dph3a4.org.Activities.LoginActivity;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 
@@ -51,7 +53,6 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         foto = sf.getString("foto", "");
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
@@ -75,7 +76,7 @@ public class UserFragment extends Fragment implements View.OnClickListener{
         etNoWA.setText(noWA);
         etIDline.setText(idLine);
 
-        String img_url = "http://10.0.2.2/pa/asset/images/foto/" + foto; // localhost
+        String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + foto; // localhost
 //        String img_url = "http://192.168.1.11/pa/asset/images/foto/" + foto; // kenari tony_plus
 //        String img_url = "http://org-web.ml/pa/asset/images/foto/" + foto; // hosting
         Glide.with(getContext()).load(img_url).into(foto_profil);

@@ -1,6 +1,7 @@
 package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePengurus;
@@ -52,4 +53,7 @@ public interface BaseApiService {
             @Field("status") String status,
             @Field("id_kegiatan") String id_kegiatan
     );
+
+    @GET("berita/allBerita")
+    Call<ResponseBerita> getAllBerita();
 }

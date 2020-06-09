@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    tools:context=".Activities.TiketSuccessActivity">
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="180dp"
+        android:src="@drawable/ic_check_circle_black_24dp"
+        android:tint="@android:color/white" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginRight="32dp"
+        android:fontFamily="@font/lato_bold"
+        android:text="Pemesanan tiket anda berhasil."
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="64dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/lato"
+        android:text=" Silakan segera konfirmasi pembayaran kepada panitia terkait."
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <Button
+        android:id="@+id/btnKeHome"
+        android:layout_width="match_parent"
+        style="@style/ButtonPrimary"
+        android:text="Kembali Ke Halaman utama"
+        android:backgroundTint="@android:color/white"
+        android:textColor="@color/colorPrimary"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom"/>
+
+</LinearLayout>

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.OrganisationActivity;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
@@ -50,7 +51,7 @@ public class OrganisationAdapter2 extends RecyclerView.Adapter<OrganisationAdapt
         holder.tvDeskripsi.setText(dataOrganisasi.get(position).getDeskripsi());
         holder.tvKetua.setText(dataOrganisasi.get(position).getKetua());
 
-        String img_url = "http://10.0.2.2/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo();
+        String img_url = RetrofitClient.IP_URL +  "asset/images/ormawa/" + dataOrganisasi.get(position).getLogo();
 //        String img_url = "http://192.168.1.11/pa/asset/images/ormawa/" + dataOrganisasi.get(position).getLogo();
         Glide.with(context).load(img_url).into(holder.ivLogo);
 

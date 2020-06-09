@@ -1,6 +1,7 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +69,8 @@ public class KegiatanFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseKegiatan> call, Throwable t) {
-                Toast.makeText(getContext(), "Koneksi Gagal", Toast.LENGTH_LONG).show();
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }
