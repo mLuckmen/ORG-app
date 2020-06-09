@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // init Component
         tvLihatOrganisasi = rootView.findViewById(R.id.tvLihatOrganisasi);
-        tvLihatAgenda = rootView.findViewById(R.id.tvLihatAgenda);
+//        tvLihatAgenda = rootView.findViewById(R.id.tvLihatAgenda);
         tvLihatKegiatan = rootView.findViewById(R.id.tvLihatKegiatan);
         headerNama = rootView.findViewById(R.id.tvNamaUser);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
@@ -118,7 +118,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         btnLihatSemuaBerita.setOnClickListener(this);
         tvLihatOrganisasi.setOnClickListener(this);
-        tvLihatAgenda.setOnClickListener(this);
+//        tvLihatAgenda.setOnClickListener(this);
         tvLihatKegiatan.setOnClickListener(this);
         headerNama.setText(nama);
 
@@ -157,9 +157,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             case R.id.tvLihatOrganisasi:
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListOrganisasiFragment(), null).addToBackStack(null).commit();
                 break;
-            case R.id.tvLihatAgenda:
-                bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
-                break;
+//            case R.id.tvLihatAgenda:
+//                bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
+//                break;
             case R.id.tvLihatKegiatan:
                 bottomNavigationView.setSelectedItemId(R.id.nav_event);
                 break;
