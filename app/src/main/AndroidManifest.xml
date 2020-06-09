@@ -13,7 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.TiketSuccessActivity"></activity>
+        <activity android:name=".Activities.LihatBeritaActivity"></activity>
+        <activity android:name=".Activities.TiketSuccessActivity" />
         <activity android:name=".Activities.DaftarKegiatanActivity" />
         <activity android:name=".Activities.DetailOrganisasiActivity" />
         <activity android:name=".Activities.OrganisationActivity" />

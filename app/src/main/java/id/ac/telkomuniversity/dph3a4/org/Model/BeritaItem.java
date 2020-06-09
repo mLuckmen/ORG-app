@@ -2,6 +2,10 @@ package id.ac.telkomuniversity.dph3a4.org.Model;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+@Parcel
+
 public class BeritaItem{
 
 	@SerializedName("tanggal")

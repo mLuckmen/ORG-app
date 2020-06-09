@@ -1,6 +1,8 @@
 package id.ac.telkomuniversity.dph3a4.org.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import id.ac.telkomuniversity.dph3a4.org.Activities.LihatBeritaActivity;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
+import id.ac.telkomuniversity.dph3a4.org.Fragments.ListOrganisasiFragment;
 import id.ac.telkomuniversity.dph3a4.org.Model.BeritaItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
@@ -47,12 +53,24 @@ public class BeritaAdapter extends RecyclerView.Adapter<BeritaAdapter.MyViewHold
             String img_url = RetrofitClient.IP_URL + "asset/images/" + dataBerita.get(position).getGambar();
             Glide.with(context).load(img_url).centerCrop().into(holder.ivFotoBerita);
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pindah = new Intent(context, LihatBeritaActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(DATA_BERITA, Parcels.wrap(dataBerita.get(position)));
+                pindah.putExtra(DATA_EXTRA, bundle);
+                context.startActivity(pindah);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
+        // 5 merupakan limit dari recyclerview
         if (dataBerita.size() > 5) {
-            return 2;
+            return 5;
         } else {
             return dataBerita.size();
         }

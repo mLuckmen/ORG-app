@@ -155,7 +155,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tvLihatOrganisasi:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListOrganisasiFragment()).addToBackStack("organisasi").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ListOrganisasiFragment(), null).addToBackStack(null).commit();
                 break;
             case R.id.tvLihatAgenda:
                 bottomNavigationView.setSelectedItemId(R.id.nav_calendar);
@@ -164,7 +164,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 bottomNavigationView.setSelectedItemId(R.id.nav_event);
                 break;
             case R.id.btnLihatSemuaBerita:
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SemuaBeritaFragment()).addToBackStack("berita").commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SemuaBeritaFragment(), null).addToBackStack(null).commit();
                 break;
         }
     }
@@ -178,11 +178,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     dataBerita = response.body().getBerita();
                     rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
 
-//                    if (dataBerita.size() > 5) {
-//                        btnLihatSemuaBerita.setVisibility(View.VISIBLE);
-//                    } else {
-//                        btnLihatSemuaBerita.setVisibility(View.GONE);
-//                    }
+                    if (dataBerita.size() > 5) {
+                        btnLihatSemuaBerita.setVisibility(View.VISIBLE);
+                    } else {
+                        btnLihatSemuaBerita.setVisibility(View.GONE);
+                    }
                 } else {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                 }

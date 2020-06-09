@@ -102,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity {
                     }
                 });
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+//        alertDialog.show();
     }
 
 //    // Action bar > Menu
