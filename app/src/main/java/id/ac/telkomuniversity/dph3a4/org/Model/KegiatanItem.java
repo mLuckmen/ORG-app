@@ -23,14 +23,17 @@ public class KegiatanItem{
 	@SerializedName("waktu")
 	private String waktu;
 
+	@SerializedName("id_programkerja")
+	private String idProgramkerja;
+
 	@SerializedName("qr_code")
 	private String qrCode;
 
 	@SerializedName("id_kegiatan")
 	private String idKegiatan;
 
-	@SerializedName("departemen")
-	private String departemen;
+	@SerializedName("upload_lpj")
+	private String uploadLpj;
 
 	public String getTempat(){
 		return tempat;
@@ -52,6 +55,10 @@ public class KegiatanItem{
 		return waktu;
 	}
 
+	public String getIdProgramkerja(){
+		return idProgramkerja;
+	}
+
 	public String getQrCode(){
 		return qrCode;
 	}
@@ -60,7 +67,7 @@ public class KegiatanItem{
 		return idKegiatan;
 	}
 
-	public String getDepartemen(){
-		return departemen;
+	public String getUploadLpj(){
+		return uploadLpj;
 	}
 }

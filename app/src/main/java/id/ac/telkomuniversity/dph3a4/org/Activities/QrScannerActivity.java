@@ -5,8 +5,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,9 +26,20 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import org.parceler.Parcels;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import id.ac.telkomuniversity.dph3a4.org.Adapters.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
+import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePresensi;
 import id.ac.telkomuniversity.dph3a4.org.R;
+import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,7 +48,15 @@ public class QrScannerActivity extends AppCompatActivity {
     private ImageView bgQrScanner;
     private CodeScanner mCodeScanner;
     private CodeScannerView scannerView;
+    List<KegiatanItem> dataKegiatan;
     Context context;
+    ProgressDialog progressDialog;
+    SharedPrefManager sharedPrefManager;
+    SharedPreferences sf;
+    Calendar calendar;
+
+    public static final String DATA_KEGIATAN_PRESENSI = "dataKegiatan";
+    public static final String DATA_EXTRA = "dataExtra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +64,10 @@ public class QrScannerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qr_scanner);
 
         context = this;
+        progressDialog = new ProgressDialog(context);
+        sharedPrefManager = new SharedPrefManager(context);
+        sf = context.getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
+        calendar = Calendar.getInstance();
 
         bgQrScanner = findViewById(R.id.bgQrScanner);
         scannerView = findViewById(R.id.scannerView);
@@ -133,17 +159,20 @@ public class QrScannerActivity extends AppCompatActivity {
         request.enqueue(new Callback<ResponseCekKegiatan>() {
             @Override
             public void onResponse(Call<ResponseCekKegiatan> call, Response<ResponseCekKegiatan> response) {
-                String cekKegiatan;
+                String message;
                 if (response.isSuccessful()){
                     if (response.body().isError()){
                         // jika tidak ada
-                        cekKegiatan = response.body().getMessage(); // cekKegiatan ga keganti
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                        showAlertDialog(response.body().getMessage());
+                        message = response.body().getMessage(); // cekKegiatan ga keganti
+//                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        showAlertDialog(message);
                     } else {
                         // jika ada
-                        cekKegiatan = response.body().getMessage(); // cekKegiatan ga keganti
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        message = response.body().getMessage(); // cekKegiatan ga keganti
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        progressDialog.setMessage("Harap Menunggu");
+//                        progressDialog.show();
+                        getKegiatanByName(namaKegiatan);
                     }
                 }
             }
@@ -154,6 +183,65 @@ public class QrScannerActivity extends AppCompatActivity {
                 Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
             }
         });
+    }
 
+    private void getKegiatanByName(String namaKegiatan){
+        Call<ResponseKegiatanByNama> request = RetrofitClient.getInstance().getApi().getKegiatanByName(namaKegiatan);
+        request.enqueue(new Callback<ResponseKegiatanByNama>() {
+            @Override
+            public void onResponse(Call<ResponseKegiatanByNama> call, Response<ResponseKegiatanByNama> response) {
+                String waktuSubmit, status, nim, idKegiatan;
+                if (response.isSuccessful()){
+                    dataKegiatan = response.body().getKegiatan();
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    waktuSubmit = dateFormat.format(new Date());
+                    status = "Hadir";
+                    nim = Integer.toString(sf.getInt("nim", 0));
+                    idKegiatan = dataKegiatan.get(0).getIdKegiatan();
+//                    String message = waktuSubmit + "\n" + status + "\n" + nim + "\n" + idKegiatan;
+//                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                    presensiKegiatan(waktuSubmit, status, nim, idKegiatan);
+                } else {
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseKegiatanByNama> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void presensiKegiatan(String waktuSubmit, String status, String nim, String idKegiatan){
+        Call<ResponsePresensi> request = RetrofitClient.getInstance().getApi().insertPresensi(waktuSubmit, status, nim, idKegiatan);
+        request.enqueue(new Callback<ResponsePresensi>() {
+            @Override
+            public void onResponse(Call<ResponsePresensi> call, Response<ResponsePresensi> response) {
+                if (response.isSuccessful()) {
+//                    Toast.makeText(context, "Sukses BOYYY", Toast.LENGTH_LONG).show();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("waktuSubmit", waktuSubmit);
+                    bundle.putString("nama", sf.getString("nama", ""));
+                    bundle.putString("poster", dataKegiatan.get(0).getFoto());
+                    bundle.putString("kegiatan", dataKegiatan.get(0).getNamaKegiatan());
+//                    bundle.putParcelable(DATA_KEGIATAN_PRESENSI, Parcels.wrap(dataKegiatan));
+
+                    Intent pindah = new Intent(context, PresensiSuccessActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    pindah.putExtras(bundle);
+                    pindah.putExtra(DATA_EXTRA, bundle);
+                    startActivity(pindah);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponsePresensi> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

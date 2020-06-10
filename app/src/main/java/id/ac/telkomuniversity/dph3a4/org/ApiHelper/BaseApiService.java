@@ -4,9 +4,11 @@ import id.ac.telkomuniversity.dph3a4.org.Adapters.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePengurus;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePresensi;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -62,4 +64,20 @@ public interface BaseApiService {
     Call<ResponseCekKegiatan> cekKegiatan(
             @Query("nama_kegiatan") String namaKegiatan
     );
+
+    @GET("kegiatan/getByName")
+    Call<ResponseKegiatanByNama> getKegiatanByName(
+            @Query("nama_kegiatan") String namaKegiatan
+    );
+
+    @FormUrlEncoded
+    @POST("kegiatan/insertPresensi")
+    Call<ResponsePresensi> insertPresensi(
+            @Field("waktu_submit") String waktuSubmit,
+            @Field("status") String status,
+            @Field("nim") String nim,
+            @Field("id_kegiatan") String idKegiatan
+    );
+
+
 }

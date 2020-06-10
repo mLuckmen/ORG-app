@@ -4,26 +4,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class DataPendaftar{
 
-	@SerializedName("metode_pembayaran")
-	private String metodePembayaran;
-
-	@SerializedName("total")
-	private String total;
+	@SerializedName("waktu_submit")
+	private String waktuSubmit;
 
 	@SerializedName("nim")
 	private String nim;
-
-	@SerializedName("nama")
-	private String nama;
-
-	@SerializedName("jumlah")
-	private String jumlah;
-
-	@SerializedName("jurusan")
-	private String jurusan;
-
-	@SerializedName("email")
-	private String email;
 
 	@SerializedName("id_kegiatan")
 	private String idKegiatan;
@@ -31,32 +16,12 @@ public class DataPendaftar{
 	@SerializedName("status")
 	private String status;
 
-	public String getMetodePembayaran(){
-		return metodePembayaran;
-	}
-
-	public String getTotal(){
-		return total;
+	public String getWaktuSubmit(){
+		return waktuSubmit;
 	}
 
 	public String getNim(){
 		return nim;
-	}
-
-	public String getNama(){
-		return nama;
-	}
-
-	public String getJumlah(){
-		return jumlah;
-	}
-
-	public String getJurusan(){
-		return jurusan;
-	}
-
-	public String getEmail(){
-		return email;
 	}
 
 	public String getIdKegiatan(){
