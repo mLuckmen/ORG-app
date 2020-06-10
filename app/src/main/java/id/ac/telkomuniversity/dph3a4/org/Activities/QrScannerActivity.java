@@ -26,14 +26,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import org.parceler.Parcels;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import id.ac.telkomuniversity.dph3a4.org.Adapters.ResponseCekKegiatan;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
@@ -220,7 +218,6 @@ public class QrScannerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponsePresensi> call, Response<ResponsePresensi> response) {
                 if (response.isSuccessful()) {
-//                    Toast.makeText(context, "Sukses BOYYY", Toast.LENGTH_LONG).show();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("waktuSubmit", waktuSubmit);

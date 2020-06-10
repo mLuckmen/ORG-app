@@ -1,4 +1,4 @@
-package id.ac.telkomuniversity.dph3a4.org.Adapters;
+package id.ac.telkomuniversity.dph3a4.org.Model;
 
 import com.google.gson.annotations.SerializedName;
 

@@ -21,13 +21,13 @@ import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.BeritaItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.R;
-import id.ac.telkomuniversity.dph3a4.org.Utils.IOnBackPressed;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class SemuaBeritaFragment extends Fragment implements IOnBackPressed {
+public class SemuaBeritaFragment extends Fragment {
     List<BeritaItem> dataBerita = new ArrayList<>();
     RecyclerView rvAllBerita;
 
@@ -73,9 +73,5 @@ public class SemuaBeritaFragment extends Fragment implements IOnBackPressed {
             }
         });
     }
-
-    @Override
-    public void onBackPressed() {
-        getActivity().getSupportFragmentManager().popBackStack();
-    }
+    
 }
