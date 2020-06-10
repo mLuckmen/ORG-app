@@ -1,5 +1,6 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,9 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import id.ac.telkomuniversity.dph3a4.org.Activities.QrScannerActivity;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter2;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
@@ -31,6 +35,7 @@ public class KegiatanFragment extends Fragment {
 
     List<KegiatanItem> dataKegiatan = new ArrayList<>();
     RecyclerView recyclerView;
+    FloatingActionButton btnScan;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,9 +52,18 @@ public class KegiatanFragment extends Fragment {
         View rootview = inflater.inflate(R.layout.fragment_kegiatan, container, false);
 
         recyclerView = rootview.findViewById(R.id.rvKegiatan);
+        btnScan = rootview.findViewById(R.id.btnScan);
 
         recyclerView.setAdapter(new KegiatanAdapter(getContext(), dataKegiatan));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        btnScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pindah = new Intent(getContext(), QrScannerActivity.class);
+                startActivity(pindah);
+            }
+        });
 
         return rootview;
     }

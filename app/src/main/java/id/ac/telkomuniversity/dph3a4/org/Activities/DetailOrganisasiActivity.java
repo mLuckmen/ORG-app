@@ -48,7 +48,7 @@ public class DetailOrganisasiActivity extends AppCompatActivity {
         namaOrg = (String) getIntent().getExtras().get("namaOrg");
         logoText = (String) getIntent().getExtras().get("logo");
         Log.i("INFO_", "org : " + namaOrg + " | logo : " + logoText);
-        String img_url = "http://10.0.2.2/pa/asset/images/ormawa/" + logoText;
+        String img_url = RetrofitClient.IP_URL + "asset/images/ormawa/" + logoText;
 
         tvOrg.setText(namaOrg);
         Glide.with(context).load(img_url).into(ivLogo);

@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.AnggotaItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
@@ -69,9 +70,7 @@ public class AnggotaAdapter extends ArrayAdapter<AnggotaItem> {
         viewHolder.nim.setText(anggotaItem.getNim());
         viewHolder.jabatan.setText(anggotaItem.getJabatan());
 
-        String img_url = "http://10.0.2.2/pa/asset/images/foto/" + anggotaItem.getFoto();
-//        String img_url = "http://192.168.1.11/pa/asset/images/foto/" + pengurusItem.getFoto(); // Kenari Tony_plus
-//        String img_url = "http://org-web.ml/pa/asset/images/foto/" + pengurusItem.getFoto();
+        String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + anggotaItem.getFoto();
         Glide.with(context).load(img_url).into(viewHolder.foto);
 
         return convertView;

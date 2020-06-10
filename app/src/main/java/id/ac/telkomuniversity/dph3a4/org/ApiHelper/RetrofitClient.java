@@ -8,7 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitClient {
 
     //    10.0.2.2 ---> IP localhost
-    public static final String IP_URL = "http://10.0.2.2/pa/";
+//    public static final String IP_URL = "http://10.0.2.2/pa/";
+    public static final String IP_URL = "http://192.168.1.7/pa/";
     public static final String BASE_URL = IP_URL + "index.php/api/";
 
     // Hosting

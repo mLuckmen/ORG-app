@@ -1,5 +1,6 @@
 package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 
+import id.ac.telkomuniversity.dph3a4.org.Adapters.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
@@ -56,4 +57,9 @@ public interface BaseApiService {
 
     @GET("berita/allBerita")
     Call<ResponseBerita> getAllBerita();
+
+    @GET("kegiatan/cekKegiatan")
+    Call<ResponseCekKegiatan> cekKegiatan(
+            @Query("nama_kegiatan") String namaKegiatan
+    );
 }

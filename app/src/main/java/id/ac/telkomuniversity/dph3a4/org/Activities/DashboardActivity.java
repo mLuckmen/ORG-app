@@ -83,27 +83,27 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             };
 
-    @Override
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-        builder.setMessage("Anda yakin ingin keluar dari aplikasi ini?")
-                .setCancelable(false)
-                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        DashboardActivity.super.onBackPressed();
-                    }
-                })
-                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-        AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        builder.setMessage("Anda yakin ingin keluar dari aplikasi ini?")
+//                .setCancelable(false)
+//                .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        DashboardActivity.super.onBackPressed();
+//                    }
+//                })
+//                .setNegativeButton("Tidak", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.cancel();
+//                    }
+//                });
+//        AlertDialog alertDialog = builder.create();
+////        alertDialog.show();
+//    }
 
 //    // Action bar > Menu
 //    @Override

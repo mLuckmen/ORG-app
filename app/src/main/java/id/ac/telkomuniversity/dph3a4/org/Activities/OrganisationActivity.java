@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import org.parceler.Parcels;
 
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
@@ -39,7 +40,7 @@ public class OrganisationActivity extends AppCompatActivity {
         NamaOrganisasi.setText(dataOrganisasi.getNamaOrganisasi());
         Deskripsi.setText(dataOrganisasi.getDeskripsi());
         Ketua.setText(dataOrganisasi.getKetua());
-        String img_url = "http://10.0.2.2/pa/asset/images/ormawa/" + dataOrganisasi.getLogo();
+        String img_url = RetrofitClient.IP_URL  + "asset/images/ormawa/" + dataOrganisasi.getLogo();
 //        String img_url = "http://192.168.1.11/pa/asset/images/ormawa/" + dataOrganisasi.getLogo();
         Glide.with(context).load(img_url).into(logo);
 
