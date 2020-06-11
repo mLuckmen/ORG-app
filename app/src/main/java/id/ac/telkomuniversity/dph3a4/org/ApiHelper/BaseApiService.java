@@ -3,6 +3,7 @@ package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
@@ -47,10 +48,11 @@ public interface BaseApiService {
     @POST("kegiatan/daftarKegiatan")
     Call<ResponsePesanTiket> daftarKegiatan(
             @Field("nama") String nama,
+            @Field("nimAkun") String nimAkun,
             @Field("nim") String nim,
             @Field("jurusan") String jurusan,
             @Field("email") String email,
-            @Field("jumlah") String jumlah,
+//            @Field("jumlah") String jumlah,
             @Field("total") String total,
             @Field("metode_pembayaran") String metode_pembayaran,
             @Field("status") String status,
@@ -63,6 +65,12 @@ public interface BaseApiService {
     @GET("kegiatan/cekKegiatan")
     Call<ResponseCekKegiatan> cekKegiatan(
             @Query("nama_kegiatan") String namaKegiatan
+    );
+
+    @GET("kegiatan/cekTiket")
+    Call<ResponseCekTiket> cekTiket(
+            @Query("nim") String nim,
+            @Query("idKegiatan") String idKegiatan
     );
 
     @GET("kegiatan/getByName")

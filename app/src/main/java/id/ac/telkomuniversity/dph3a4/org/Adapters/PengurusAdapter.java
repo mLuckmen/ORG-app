@@ -71,8 +71,10 @@ public class PengurusAdapter extends ArrayAdapter<PengurusItem>  {
         viewHolder.nim.setText(pengurusItem.getNim());
         viewHolder.jabatan.setText(pengurusItem.getJabatan());
 
-        String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + pengurusItem.getFoto();
-        Glide.with(context).load(img_url).into(viewHolder.foto);
+        if (!pengurusItem.getFoto().equals("")){
+            String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + pengurusItem.getFoto();
+            Glide.with(context).load(img_url).into(viewHolder.foto);
+        }
 
         return convertView;
     }

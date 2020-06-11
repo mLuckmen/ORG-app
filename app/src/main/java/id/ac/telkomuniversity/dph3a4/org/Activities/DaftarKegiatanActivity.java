@@ -2,15 +2,18 @@ package id.ac.telkomuniversity.dph3a4.org.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -18,9 +21,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONObject;
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,11 +30,12 @@ import java.util.Locale;
 
 import id.ac.telkomuniversity.dph3a4.org.Adapters.HintAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
-import id.ac.telkomuniversity.dph3a4.org.Adapters.RequiredSpinnerAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
 import id.ac.telkomuniversity.dph3a4.org.R;
+import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,14 +49,18 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
     KegiatanItem dataKegiatan;
     TextView namaKegiatan, tanggalPelaksanaan, tempatPelaksanaan, harga;
 
-    String nama, nim, jurusan, email, jumlah, total, metode_pembayaran, status, id_kegiatan;
+    String nama, nim, nimAkun, jurusan, email, total, metode_pembayaran, status, id_kegiatan;
     EditText namaPendaftar, nimPendaftar, jurusanPendaftar, emailPendaftar;
     Button btnPesan;
 
     ImageView posterKegiatan;
     Context context;
+    SharedPrefManager sharedPrefManager;
+    SharedPreferences sf;
 
     Dialog myDialog;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,9 +108,9 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         spinnerPembayaran.setAdapter(hintPembayaran);
         spinnerPembayaran.setSelection(hintPembayaran.getCount());
 
-        HintAdapter hintJumlah = new HintAdapter(this, android.R.layout.simple_spinner_dropdown_item, pilihanJumlahTiket);
-        spinnerJumlah.setAdapter(hintJumlah);
-        spinnerJumlah.setSelection(hintPembayaran.getCount());
+//        HintAdapter hintJumlah = new HintAdapter(this, android.R.layout.simple_spinner_dropdown_item, pilihanJumlahTiket);
+//        spinnerJumlah.setAdapter(hintJumlah);
+//        spinnerJumlah.setSelection(hintPembayaran.getCount());
     }
 
     public void initComponents() {
@@ -123,14 +129,20 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         jurusanPendaftar = findViewById(R.id.jurusanPendaftar);
         emailPendaftar = findViewById(R.id.emailPendaftar);
         spinnerPembayaran = findViewById(R.id.spinnerPembayaran);
-        spinnerJumlah = findViewById(R.id.spinnerJumlah);
+//        spinnerJumlah = findViewById(R.id.spinnerJumlah);
         btnPesan = findViewById(R.id.btnPesan2);
+
+        sharedPrefManager = new SharedPrefManager(context);
+        sf = context.getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
+
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading");
 
         myDialog = new Dialog(this);
     }
 
     private void submitPesanTiket() {
-        Call<ResponsePesanTiket> request = RetrofitClient.getInstance().getApi().daftarKegiatan(nama, nim, jurusan, email, jumlah, total, metode_pembayaran, status, id_kegiatan);
+        Call<ResponsePesanTiket> request = RetrofitClient.getInstance().getApi().daftarKegiatan(nama, nimAkun, nim, jurusan, email, total, metode_pembayaran, status, id_kegiatan);
 
         request.enqueue(new Callback<ResponsePesanTiket>() {
             @Override
@@ -155,20 +167,22 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
 
     private void btnPesanAction() {
         nama = namaPendaftar.getText().toString();
+        nimAkun = Integer.toString(sf.getInt("nim", 0));
         nim = nimPendaftar.getText().toString();
         jurusan = jurusanPendaftar.getText().toString();
         email = emailPendaftar.getText().toString();
         status = "Menunggu";
         id_kegiatan = dataKegiatan.getIdKegiatan();
+        total = dataKegiatan.getHarga();
 
-        jumlah = spinnerJumlah.getSelectedItem().toString();
-        if (jumlah.equals("1 Orang")) {
-            total = dataKegiatan.getHarga();
-            jumlah = "1";
-        } else if (jumlah.equals("2 Orang")) {
-            total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
-            jumlah = "2";
-        }
+//        jumlah = spinnerJumlah.getSelectedItem().toString();
+//        if (jumlah.equals("1 Orang")) {
+//            total = dataKegiatan.getHarga();
+//            jumlah = "1";
+//        } else if (jumlah.equals("2 Orang")) {
+//            total = Integer.toString(2*Integer.parseInt(dataKegiatan.getHarga()));
+//            jumlah = "2";
+//        }
         metode_pembayaran = spinnerPembayaran.getSelectedItem().toString();
 
         formValidation();
@@ -206,6 +220,35 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
 
     }
 
+    private void cekTiket(String nim, String id_kegiatan){
+        Call<ResponseCekTiket> request = RetrofitClient.getInstance().getApi().cekTiket(nim, id_kegiatan);
+        request.enqueue(new Callback<ResponseCekTiket>() {
+            @Override
+            public void onResponse(Call<ResponseCekTiket> call, Response<ResponseCekTiket> response) {
+                progressDialog.dismiss();
+                Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                if (response.isSuccessful()){
+                    if (!response.body().isError()){
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+//                        submitPesanTiket();
+                    } else {
+                        myDialog.dismiss();
+                        showAlertDialog(response.body().getMessage());
+//                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCekTiket> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void showConfirmationDialog() {
         ImageView close;
         Button konfirmasi, batal;
@@ -219,7 +262,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         nim2 = myDialog.findViewById(R.id.tvDetailNim);
         jurusan2 = myDialog.findViewById(R.id.tvDetailJurusan);
         email2 = myDialog.findViewById(R.id.tvDetailEmail);
-        jumlahTiket2 = myDialog.findViewById(R.id.tvDetailJumlahTiket);
+//        jumlahTiket2 = myDialog.findViewById(R.id.tvDetailJumlahTiket);
         metodePembayaran2 = myDialog.findViewById(R.id.tvDetailMetodePembayaran);
         total2 = myDialog.findViewById(R.id.tvDetailTotal);
 
@@ -229,7 +272,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         nim2.setText(nim);
         jurusan2.setText(jurusan);
         email2.setText(email);
-        jumlahTiket2.setText(jumlah);
+//        jumlahTiket2.setText(jumlah);
         metodePembayaran2.setText(metode_pembayaran);
         total2.setText("Rp. " + total);
 
@@ -252,11 +295,42 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         konfirmasi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                submitPesanTiket();
+                progressDialog.show();
+                cekTiket(nim, dataKegiatan.getIdKegiatan());
             }
         });
 
         myDialog.show();
+    }
+
+    private void showAlertDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton(
+                "Ubah data",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }
+            );
+
+        builder.setNegativeButton(
+                "Batal",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                        DaftarKegiatanActivity.super.onBackPressed();
+                    }
+                }
+            );
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
 }

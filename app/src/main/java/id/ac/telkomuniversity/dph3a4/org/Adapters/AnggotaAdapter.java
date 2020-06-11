@@ -70,8 +70,10 @@ public class AnggotaAdapter extends ArrayAdapter<AnggotaItem> {
         viewHolder.nim.setText(anggotaItem.getNim());
         viewHolder.jabatan.setText(anggotaItem.getJabatan());
 
-        String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + anggotaItem.getFoto();
-        Glide.with(context).load(img_url).into(viewHolder.foto);
+        if (!anggotaItem.getFoto().equals("")){
+            String img_url = RetrofitClient.IP_URL + "asset/images/foto/" + anggotaItem.getFoto();
+            Glide.with(context).load(img_url).into(viewHolder.foto);
+        }
 
         return convertView;
     }
