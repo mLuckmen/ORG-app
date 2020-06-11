@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     private void getDataOnline() {
         ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Mengambil data dari server");
+        progressDialog.setMessage("Loading...");
         progressDialog.show();
 
         Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));

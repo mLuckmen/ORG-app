@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import org.parceler.Parcels;
 
 import java.text.ParseException;
@@ -23,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.DaftarKegiatanActivity;
+import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
 
@@ -64,9 +67,9 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
         holder.tvTempatPelaksanaan.setText(dataKegiatan.get(position).getTempat());
         holder.tvHargaTiket.setText("Harga tiket : Rp." + dataKegiatan.get(position).getHarga());
 
-        if (dataKegiatan.get(position).getFoto() != "") {
-            String img_url = "http://10.0.2.2/pa/asset/images/" + dataKegiatan.get(position).getFoto();
-//            Glide.with(context).load(img_url).into(holder.ivPosterKegiatan);
+        if (!dataKegiatan.get(position).getFoto().equals("")) {
+            String img_url = RetrofitClient.IP_URL + "asset/images/" + dataKegiatan.get(position).getFoto();
+            Glide.with(context).load(img_url).into(holder.ivPosterKegiatan);
         }
 
         holder.btnDaftar.setOnClickListener(new View.OnClickListener() {

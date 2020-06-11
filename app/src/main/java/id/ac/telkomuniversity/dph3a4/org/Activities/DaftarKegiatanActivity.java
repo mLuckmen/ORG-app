@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.parceler.Parcels;
 
 import java.text.ParseException;
@@ -99,8 +101,10 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         tempatPelaksanaan.setText(dataKegiatan.getTempat());
         harga.setText("Harga Tiket : Rp." + dataKegiatan.getHarga());
 
-        String img_url = RetrofitClient.IP_URL + "asset/images/ormawa/" + dataKegiatan.getFoto();
-//        Glide.with(context).load(img_url).into(posterKegiatan);
+        if (!dataKegiatan.getFoto().equals("")){
+            String img_url = RetrofitClient.IP_URL + "asset/images/" + dataKegiatan.getFoto();
+            Glide.with(context).load(img_url).into(posterKegiatan);
+        }
     }
 
     public void setSpinnerForm() {

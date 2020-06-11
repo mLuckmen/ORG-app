@@ -1,5 +1,6 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +37,7 @@ public class KegiatanFragment extends Fragment {
     List<KegiatanItem> dataKegiatan = new ArrayList<>();
     RecyclerView recyclerView;
     FloatingActionButton btnScan;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,11 +70,16 @@ public class KegiatanFragment extends Fragment {
         return rootview;
     }
 
+    // blm fix -> kegiatan >= tgl hari ini
     private void getDataOnline() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
         Call<ResponseKegiatan> request = RetrofitClient.getInstance().getApi().showKegiatan();
         request.enqueue(new Callback<ResponseKegiatan>() {
             @Override
             public void onResponse(Call<ResponseKegiatan> call, Response<ResponseKegiatan> response) {
+                progressDialog.dismiss();
                 if (response.isSuccessful()) {
                     dataKegiatan = response.body().getKegiatan();
                     recyclerView.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));

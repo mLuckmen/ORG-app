@@ -3,6 +3,7 @@ package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
@@ -76,6 +77,12 @@ public interface BaseApiService {
     @GET("kegiatan/getByName")
     Call<ResponseKegiatanByNama> getKegiatanByName(
             @Query("nama_kegiatan") String namaKegiatan
+    );
+
+    @GET("kegiatan/cekPresensi")
+    Call<ResponseCekPresensi> cekPresensi(
+            @Query("nim") String nim,
+            @Query("idKegiatan") String idKegiatan
     );
 
     @FormUrlEncoded

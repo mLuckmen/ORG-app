@@ -34,6 +34,7 @@ import java.util.List;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePresensi;
 import id.ac.telkomuniversity.dph3a4.org.R;
@@ -63,6 +64,7 @@ public class QrScannerActivity extends AppCompatActivity {
 
         context = this;
         progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
         sharedPrefManager = new SharedPrefManager(context);
         sf = context.getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
         calendar = Calendar.getInstance();
@@ -159,18 +161,18 @@ public class QrScannerActivity extends AppCompatActivity {
             public void onResponse(Call<ResponseCekKegiatan> call, Response<ResponseCekKegiatan> response) {
                 String message;
                 if (response.isSuccessful()){
-                    if (response.body().isError()){
+                    if (!response.body().isError()){
+                        // jika ada
+                        message = response.body().getMessage(); // cekKegiatan ga keganti
+                        Toast.makeText(context, message + " : " + namaKegiatan, Toast.LENGTH_LONG).show();
+                        progressDialog.setMessage("Harap Menunggu");
+                        progressDialog.show();
+                        getKegiatanByName(namaKegiatan);
+                    } else {
                         // jika tidak ada
                         message = response.body().getMessage(); // cekKegiatan ga keganti
 //                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                         showAlertDialog(message);
-                    } else {
-                        // jika ada
-                        message = response.body().getMessage(); // cekKegiatan ga keganti
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                        progressDialog.setMessage("Harap Menunggu");
-//                        progressDialog.show();
-                        getKegiatanByName(namaKegiatan);
                     }
                 }
             }
@@ -188,17 +190,13 @@ public class QrScannerActivity extends AppCompatActivity {
         request.enqueue(new Callback<ResponseKegiatanByNama>() {
             @Override
             public void onResponse(Call<ResponseKegiatanByNama> call, Response<ResponseKegiatanByNama> response) {
-                String waktuSubmit, status, nim, idKegiatan;
+                String nim, idKegiatan;
                 if (response.isSuccessful()){
                     dataKegiatan = response.body().getKegiatan();
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    waktuSubmit = dateFormat.format(new Date());
-                    status = "Hadir";
                     nim = Integer.toString(sf.getInt("nim", 0));
                     idKegiatan = dataKegiatan.get(0).getIdKegiatan();
-//                    String message = waktuSubmit + "\n" + status + "\n" + nim + "\n" + idKegiatan;
-//                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
-                    presensiKegiatan(waktuSubmit, status, nim, idKegiatan);
+
+                    cekPresensi(nim, idKegiatan);
                 } else {
                     Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -218,6 +216,7 @@ public class QrScannerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<ResponsePresensi> call, Response<ResponsePresensi> response) {
                 if (response.isSuccessful()) {
+                    progressDialog.dismiss();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("waktuSubmit", waktuSubmit);
@@ -231,11 +230,44 @@ public class QrScannerActivity extends AppCompatActivity {
                     pindah.putExtras(bundle);
                     pindah.putExtra(DATA_EXTRA, bundle);
                     startActivity(pindah);
+                } else {
+                    Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponsePresensi> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void cekPresensi(String nim, String idKegiatan){
+        Call<ResponseCekPresensi> request = RetrofitClient.getInstance().getApi().cekPresensi(nim, idKegiatan);
+        request.enqueue(new Callback<ResponseCekPresensi>() {
+            @Override
+            public void onResponse(Call<ResponseCekPresensi> call, Response<ResponseCekPresensi> response) {
+                String waktuSubmit, status;
+                if (response.isSuccessful()){
+                    if (!response.body().isError()){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        waktuSubmit = dateFormat.format(new Date());
+                        status = "Hadir";
+
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+//                        presensiKegiatan();
+                        presensiKegiatan(waktuSubmit, status, nim, idKegiatan);
+                    } else {
+                        progressDialog.dismiss();
+                        showAlertDialog(response.body().getMessage());
+//                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCekPresensi> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
             }
