@@ -1,12 +1,15 @@
 package id.ac.telkomuniversity.dph3a4.org.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +28,10 @@ import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter2;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHitungPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.R;
+import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,11 +43,17 @@ public class KegiatanFragment extends Fragment {
     RecyclerView recyclerView;
     FloatingActionButton btnScan;
     ProgressDialog progressDialog;
+    TextView jumlahKegiatan;
+
+    SharedPreferences sf;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        sf = getActivity().getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
+        String nim = Integer.toString(sf.getInt("nim",0));
 
         getDataOnline();
+        hitungPresensi(nim);
 
         super.onCreate(savedInstanceState);
     }
@@ -55,6 +66,7 @@ public class KegiatanFragment extends Fragment {
 
         recyclerView = rootview.findViewById(R.id.rvKegiatan);
         btnScan = rootview.findViewById(R.id.btnScan);
+        jumlahKegiatan = rootview.findViewById(R.id.tvJumlahKegiatan);
 
         recyclerView.setAdapter(new KegiatanAdapter(getContext(), dataKegiatan));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -70,7 +82,6 @@ public class KegiatanFragment extends Fragment {
         return rootview;
     }
 
-    // blm fix -> kegiatan >= tgl hari ini
     private void getDataOnline() {
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading...");
@@ -90,6 +101,26 @@ public class KegiatanFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseKegiatan> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void hitungPresensi(String nim){
+        Call<ResponseHitungPresensi> request = RetrofitClient.getInstance().getApi().hitungPresensi(nim);
+        request.enqueue(new Callback<ResponseHitungPresensi>() {
+            @Override
+            public void onResponse(Call<ResponseHitungPresensi> call, Response<ResponseHitungPresensi> response) {
+                if (response.isSuccessful()){
+                    jumlahKegiatan.setText(response.body().getHitungPresensi());
+                }else{
+                    Toast.makeText(getActivity(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseHitungPresensi> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }

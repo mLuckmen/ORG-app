@@ -33,11 +33,14 @@ import java.util.List;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.DashboardActivity;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.BeritaAdapter;
+import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.BeritaItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import retrofit2.Call;
@@ -51,7 +54,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     TextView headerNama, tvLihatOrganisasi, tvLihatAgenda, tvLihatKegiatan;
     List<OrganisationItem> dataOrganisasi = new ArrayList<>();
     List<BeritaItem> dataBerita = new ArrayList<>();
-    RecyclerView recycler, rvBerita;
+    List<KegiatanItem> dataKegiatan = new ArrayList<>();
+    RecyclerView recycler, rvBerita, rvKegiatan;
     SharedPreferences sf;
     BottomNavigationView bottomNavigationView;
     Button btnLihatSemuaBerita;
@@ -63,6 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         getDataOnline();
         getDataBerita();
+        getDataKegiatan();
 
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -115,6 +120,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recycler = rootView.findViewById(R.id.rvOrganisasi);
         rvBerita = rootView.findViewById(R.id.rvBerita);
         btnLihatSemuaBerita = rootView.findViewById(R.id.btnLihatSemuaBerita);
+        rvKegiatan = rootView.findViewById(R.id.rvKegiatan);
 
         btnLihatSemuaBerita.setOnClickListener(this);
         tvLihatOrganisasi.setOnClickListener(this);
@@ -127,6 +133,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
         rvBerita.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        rvKegiatan.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
+        rvKegiatan.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         return rootView;
     }
@@ -192,6 +200,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onFailure(Call<ResponseBerita> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void getDataKegiatan(){
+        Call<ResponseKegiatan> request = RetrofitClient.getInstance().getApi().showKegiatan();
+        request.enqueue(new Callback<ResponseKegiatan>() {
+            @Override
+            public void onResponse(Call<ResponseKegiatan> call, Response<ResponseKegiatan> response) {
+//                dataBerita = response.body().getBerita();
+//                rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+                dataKegiatan = response.body().getKegiatan();
+                rvKegiatan.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
+            }
+
+            @Override
+            public void onFailure(Call<ResponseKegiatan> call, Throwable t) {
+
             }
         });
     }
