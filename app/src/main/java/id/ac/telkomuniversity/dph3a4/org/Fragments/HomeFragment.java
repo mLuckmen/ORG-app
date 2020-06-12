@@ -12,7 +12,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,18 +19,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import id.ac.telkomuniversity.dph3a4.org.Activities.DashboardActivity;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.BeritaAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
@@ -52,13 +49,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     String nama;
     TextView headerNama, tvLihatOrganisasi, tvLihatAgenda, tvLihatKegiatan;
+    TextView tvOrgNull;
     List<OrganisationItem> dataOrganisasi = new ArrayList<>();
     List<BeritaItem> dataBerita = new ArrayList<>();
     List<KegiatanItem> dataKegiatan = new ArrayList<>();
-    RecyclerView recycler, rvBerita, rvKegiatan;
+    RecyclerView rvOrganisasi, rvBerita, rvKegiatan;
     SharedPreferences sf;
     BottomNavigationView bottomNavigationView;
     Button btnLihatSemuaBerita;
+    CardView card1, cardAgenda, card2, card3, card4;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,12 +87,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tvLihatOrganisasi = rootView.findViewById(R.id.tvLihatOrganisasi);
 //        tvLihatAgenda = rootView.findViewById(R.id.tvLihatAgenda);
         tvLihatKegiatan = rootView.findViewById(R.id.tvLihatKegiatan);
+        tvOrgNull = rootView.findViewById(R.id.tvOrgNull);
         headerNama = rootView.findViewById(R.id.tvNamaUser);
         bottomNavigationView = getActivity().findViewById(R.id.bottom_navigation); // untuk pindah menu
-        recycler = rootView.findViewById(R.id.rvOrganisasi);
+        rvOrganisasi = rootView.findViewById(R.id.rvOrganisasi);
         rvBerita = rootView.findViewById(R.id.rvBerita);
         btnLihatSemuaBerita = rootView.findViewById(R.id.btnLihatSemuaBerita);
         rvKegiatan = rootView.findViewById(R.id.rvKegiatan);
+
+        card1 = rootView.findViewById(R.id.card1);
+        cardAgenda = rootView.findViewById(R.id.cardAgenda);
+        card2 = rootView.findViewById(R.id.card2);
+        card2.setVisibility(View.GONE);
+        card3 = rootView.findViewById(R.id.card3);
+        card4 = rootView.findViewById(R.id.card4);
+
 
         btnLihatSemuaBerita.setOnClickListener(this);
         tvLihatOrganisasi.setOnClickListener(this);
@@ -102,8 +110,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         headerNama.setText(nama);
 
         // set Adapter
-        recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        rvOrganisasi.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
+        rvOrganisasi.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
         rvBerita.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         rvKegiatan.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
@@ -123,8 +131,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onResponse(Call<ResponseOrganisation> call, Response<ResponseOrganisation> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()){
-                    dataOrganisasi = response.body().getData();
-                    recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
+                    if (!response.body().isError()){
+                        dataOrganisasi = response.body().getData();
+                        rvOrganisasi.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
+                        card1.setVisibility(View.GONE);
+                    } else {
+                        tvOrgNull.setText(response.body().getMessage());
+                        tvLihatOrganisasi.setVisibility(View.INVISIBLE);
+                        rvOrganisasi.setVisibility(View.GONE);
+                    }
                 } else {
                     Toast.makeText(getContext(), "Request not success", Toast.LENGTH_LONG).show();
                 }
@@ -183,14 +198,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onResponse(Call<ResponseBerita> call, Response<ResponseBerita> response) {
                 if (response.isSuccessful()){
-                    dataBerita = response.body().getBerita();
-                    rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+                    if (!response.body().isError()){
+                        dataBerita = response.body().getBerita();
+                        rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
+                        card4.setVisibility(View.GONE);
 
-                    if (dataBerita.size() > 5) {
-                        btnLihatSemuaBerita.setVisibility(View.VISIBLE);
+                        if (dataBerita.size() > 5) {
+                            btnLihatSemuaBerita.setVisibility(View.VISIBLE);
+                        } else {
+                            btnLihatSemuaBerita.setVisibility(View.GONE);
+                        }
                     } else {
                         btnLihatSemuaBerita.setVisibility(View.GONE);
+                        rvBerita.setVisibility(View.GONE);
                     }
+
                 } else {
                     Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -209,15 +231,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         request.enqueue(new Callback<ResponseKegiatan>() {
             @Override
             public void onResponse(Call<ResponseKegiatan> call, Response<ResponseKegiatan> response) {
+                if (response.isSuccessful()){
+                    if (!response.body().isError()){
+                        dataKegiatan = response.body().getKegiatan();
+                        rvKegiatan.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
+                        card3.setVisibility(View.GONE);
+                    } else {
+                        rvKegiatan.setVisibility(View.GONE);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Request not success", Toast.LENGTH_LONG).show();
+                }
 //                dataBerita = response.body().getBerita();
 //                rvBerita.setAdapter(new BeritaAdapter(getActivity(), dataBerita));
-                dataKegiatan = response.body().getKegiatan();
-                rvKegiatan.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
             }
 
             @Override
             public void onFailure(Call<ResponseKegiatan> call, Throwable t) {
-
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
     }

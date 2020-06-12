@@ -44,7 +44,7 @@ public class KegiatanFragment extends Fragment {
     FloatingActionButton btnScan;
     ProgressDialog progressDialog;
     TextView jumlahKegiatan;
-    CardView cardHistory;
+    CardView cardHistory, cardKegiatanNull;
 
     SharedPreferences sf;
 
@@ -69,6 +69,7 @@ public class KegiatanFragment extends Fragment {
         btnScan = rootview.findViewById(R.id.btnScan);
         jumlahKegiatan = rootview.findViewById(R.id.tvJumlahKegiatan);
         cardHistory = rootview.findViewById(R.id.cardHistory);
+        cardKegiatanNull = rootview.findViewById(R.id.cardKegiatanNull);
 
         cardHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,8 +104,13 @@ public class KegiatanFragment extends Fragment {
             public void onResponse(Call<ResponseKegiatan> call, Response<ResponseKegiatan> response) {
                 progressDialog.dismiss();
                 if (response.isSuccessful()) {
-                    dataKegiatan = response.body().getKegiatan();
-                    recyclerView.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
+                    if (!response.body().isError()){
+                        dataKegiatan = response.body().getKegiatan();
+                        recyclerView.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
+                        cardKegiatanNull.setVisibility(View.GONE);
+                    } else {
+                        recyclerView.setVisibility(View.GONE);
+                    }
                 } else {
                     Toast.makeText(getContext(), "Gagal Melihat Kegiatan", Toast.LENGTH_LONG).show();
                 }
