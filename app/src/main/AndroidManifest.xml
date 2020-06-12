@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.PresensiSuccessActivity"></activity>
+        <activity
+            android:name=".Activities.HistoryKegiatanActivity"
+            android:label="@string/title_activity_history_kegiatan"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Activities.PresensiSuccessActivity" />
         <activity android:name=".Activities.QrScannerActivity" />
         <activity android:name=".Activities.LihatBeritaActivity" />
         <activity android:name=".Activities.TiketSuccessActivity" />

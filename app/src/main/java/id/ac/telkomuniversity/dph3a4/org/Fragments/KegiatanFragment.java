@@ -24,15 +24,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import id.ac.telkomuniversity.dph3a4.org.Activities.HistoryKegiatanActivity;
 import id.ac.telkomuniversity.dph3a4.org.Activities.QrScannerActivity;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
-import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter2;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHitungPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.R;
-import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -74,7 +73,9 @@ public class KegiatanFragment extends Fragment {
         cardHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HistoryKegiatanFragment(), null).addToBackStack(null).commit();
+                Intent pindah = new Intent(getContext(), HistoryKegiatanActivity.class);
+                startActivity(pindah);
             }
         });
 
