@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,6 +45,7 @@ public class KegiatanFragment extends Fragment {
     FloatingActionButton btnScan;
     ProgressDialog progressDialog;
     TextView jumlahKegiatan;
+    CardView cardHistory;
 
     SharedPreferences sf;
 
@@ -67,6 +69,14 @@ public class KegiatanFragment extends Fragment {
         recyclerView = rootview.findViewById(R.id.rvKegiatan);
         btnScan = rootview.findViewById(R.id.btnScan);
         jumlahKegiatan = rootview.findViewById(R.id.tvJumlahKegiatan);
+        cardHistory = rootview.findViewById(R.id.cardHistory);
+
+        cardHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         recyclerView.setAdapter(new KegiatanAdapter(getContext(), dataKegiatan));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

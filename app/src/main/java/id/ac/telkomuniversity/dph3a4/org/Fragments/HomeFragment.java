@@ -73,33 +73,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         setHasOptionsMenu(true);
     }
 
-    private void getDataOnline() {
-        ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading...");
-        progressDialog.show();
-
-        Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));
-        request.enqueue(new Callback<ResponseOrganisation>() {
-            @Override
-            public void onResponse(Call<ResponseOrganisation> call, Response<ResponseOrganisation> response) {
-                progressDialog.dismiss();
-                if (response.isSuccessful()){
-                    dataOrganisasi = response.body().getData();
-                    recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
-                } else {
-                    Toast.makeText(getContext(), "Request not success", Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseOrganisation> call, Throwable t) {
-                progressDialog.dismiss();
-                Log.e("debug", "onFailure: ERROR > " + t.toString());
-                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -137,6 +110,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rvKegiatan.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
 
         return rootView;
+    }
+
+    private void getDataOnline() {
+        ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        Call<ResponseOrganisation> request = RetrofitClient.getInstance().getApi().getOrganisation(sf.getInt("nim", 0));
+        request.enqueue(new Callback<ResponseOrganisation>() {
+            @Override
+            public void onResponse(Call<ResponseOrganisation> call, Response<ResponseOrganisation> response) {
+                progressDialog.dismiss();
+                if (response.isSuccessful()){
+                    dataOrganisasi = response.body().getData();
+                    recycler.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
+                } else {
+                    Toast.makeText(getContext(), "Request not success", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseOrganisation> call, Throwable t) {
+                progressDialog.dismiss();
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     // Activate menu
