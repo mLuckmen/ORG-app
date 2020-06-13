@@ -35,6 +35,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekPresensi;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePresensi;
 import id.ac.telkomuniversity.dph3a4.org.R;
@@ -171,7 +172,7 @@ public class QrScannerActivity extends AppCompatActivity {
                     } else {
                         // jika tidak ada
                         message = response.body().getMessage(); // cekKegiatan ga keganti
-//                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, message + " : " + namaKegiatan, Toast.LENGTH_LONG).show();
                         showAlertDialog(message);
                     }
                 }
@@ -196,7 +197,7 @@ public class QrScannerActivity extends AppCompatActivity {
                     nim = Integer.toString(sf.getInt("nim", 0));
                     idKegiatan = dataKegiatan.get(0).getIdKegiatan();
 
-                    cekPresensi(nim, idKegiatan);
+                    cekTiket(nim, idKegiatan);
                 } else {
                     Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                 }
@@ -204,6 +205,34 @@ public class QrScannerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseKegiatanByNama> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void cekTiket(String nim, String idKegiatan){
+        Call<ResponseCekTiket> request = RetrofitClient.getInstance().getApi().cekTiket(nim, idKegiatan);
+        request.enqueue(new Callback<ResponseCekTiket>() {
+            @Override
+            public void onResponse(Call<ResponseCekTiket> call, Response<ResponseCekTiket> response) {
+                if (response.isSuccessful()){
+                    if (response.body().isError()){
+                        // sudah punya tiket
+                        cekPresensi(nim, idKegiatan);
+                    } else {
+                        String message = "Anda belum terdaftar di kegiatan ini, silakan daftar terlebih dahulu.";
+                        progressDialog.dismiss();
+                        showAlertDialog(message);
+//                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(context, "Gagal cek tiket", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseCekTiket> call, Throwable t) {
                 Log.e("debug", "onFailure: ERROR > " + t.toString());
                 Toast.makeText(context, t.toString(), Toast.LENGTH_LONG).show();
             }
@@ -255,8 +284,7 @@ public class QrScannerActivity extends AppCompatActivity {
                         waktuSubmit = dateFormat.format(new Date());
                         status = "Hadir";
 
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
-//                        presensiKegiatan();
+//                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
                         presensiKegiatan(waktuSubmit, status, nim, idKegiatan);
                     } else {
                         progressDialog.dismiss();

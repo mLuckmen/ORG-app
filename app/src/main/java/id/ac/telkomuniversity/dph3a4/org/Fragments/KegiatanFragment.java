@@ -70,13 +70,14 @@ public class KegiatanFragment extends Fragment {
         jumlahKegiatan = rootview.findViewById(R.id.tvJumlahKegiatan);
         cardHistory = rootview.findViewById(R.id.cardHistory);
         cardKegiatanNull = rootview.findViewById(R.id.cardKegiatanNull);
+        cardKegiatanNull.setVisibility(View.GONE);
 
         cardHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HistoryKegiatanFragment(), null).addToBackStack(null).commit();
-                Intent pindah = new Intent(getContext(), HistoryKegiatanActivity.class);
-                startActivity(pindah);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HistoriKegiatanFragment()).addToBackStack(null).commit();
+//                Intent pindah = new Intent(getContext(), HistoryKegiatanActivity.class);
+//                startActivity(pindah);
             }
         });
 
@@ -107,8 +108,8 @@ public class KegiatanFragment extends Fragment {
                     if (!response.body().isError()){
                         dataKegiatan = response.body().getKegiatan();
                         recyclerView.setAdapter(new KegiatanAdapter(getActivity(), dataKegiatan));
-                        cardKegiatanNull.setVisibility(View.GONE);
                     } else {
+                        cardKegiatanNull.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
                 } else {
@@ -124,7 +125,7 @@ public class KegiatanFragment extends Fragment {
         });
     }
 
-    private void hitungPresensi(String nim){
+    public void hitungPresensi(String nim){
         Call<ResponseHitungPresensi> request = RetrofitClient.getInstance().getApi().hitungPresensi(nim);
         request.enqueue(new Callback<ResponseHitungPresensi>() {
             @Override

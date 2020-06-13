@@ -5,6 +5,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHistoriPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHitungPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
@@ -97,6 +98,11 @@ public interface BaseApiService {
 
     @GET("kegiatan/hitungPresensi")
     Call<ResponseHitungPresensi> hitungPresensi(
+            @Query("nim") String nim
+    );
+
+    @GET("kegiatan/historiPresensi")
+    Call<ResponseHistoriPresensi> historiPresensi(
             @Query("nim") String nim
     );
 

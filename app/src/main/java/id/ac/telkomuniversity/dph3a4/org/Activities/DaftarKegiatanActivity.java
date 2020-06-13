@@ -233,8 +233,8 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
                 Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
                 if (response.isSuccessful()){
                     if (!response.body().isError()){
-                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
-//                        submitPesanTiket();
+//                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        submitPesanTiket();
                     } else {
                         myDialog.dismiss();
                         showAlertDialog(response.body().getMessage());
