@@ -69,7 +69,7 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
 
         if (!dataKegiatan.get(position).getFoto().equals("")) {
             String img_url = RetrofitClient.IP_URL + "asset/images/" + dataKegiatan.get(position).getFoto();
-            Glide.with(context).load(img_url).into(holder.ivPosterKegiatan);
+            Glide.with(context).load(img_url).centerCrop().into(holder.ivPosterKegiatan);
         }
 
         holder.btnDaftar.setOnClickListener(new View.OnClickListener() {

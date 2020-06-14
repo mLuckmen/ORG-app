@@ -144,6 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
                     android:hint="Masukkan NIM Anda"
+                    android:maxLength="10"
                     android:inputType="phone"
                     android:digits="0123456789"/>
             </LinearLayout>
