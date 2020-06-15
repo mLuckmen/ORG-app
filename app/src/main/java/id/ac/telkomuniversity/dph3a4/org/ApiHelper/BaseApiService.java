@@ -1,5 +1,6 @@
 package id.ac.telkomuniversity.dph3a4.org.ApiHelper;
 
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAgenda;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAnggota;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
@@ -104,6 +105,11 @@ public interface BaseApiService {
     @GET("kegiatan/historiPresensi")
     Call<ResponseHistoriPresensi> historiPresensi(
             @Query("nim") String nim
+    );
+
+    @GET("agenda/getAgendaOrganisasi")
+    Call<ResponseAgenda> getAgendaOrganisasi(
+            @Query("idOrganisasi") String[] idOrganisasi
     );
 
 }

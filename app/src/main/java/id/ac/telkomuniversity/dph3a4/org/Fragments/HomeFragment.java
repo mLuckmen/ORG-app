@@ -26,16 +26,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import id.ac.telkomuniversity.dph3a4.org.Adapters.BeritaAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.Adapters.OrganisationAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
+import id.ac.telkomuniversity.dph3a4.org.Model.AgendaOrganisasiItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.BeritaItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.OrganisationItem;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseAgenda;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseBerita;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
@@ -49,15 +55,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     String nama;
     TextView headerNama, tvLihatOrganisasi, tvLihatAgenda, tvLihatKegiatan;
+    TextView tglAgenda, blnAgenda, orgAgenda, tempatAgenda, kategoriAgenda;
     TextView tvOrgNull;
     List<OrganisationItem> dataOrganisasi = new ArrayList<>();
     List<BeritaItem> dataBerita = new ArrayList<>();
     List<KegiatanItem> dataKegiatan = new ArrayList<>();
+    List<AgendaOrganisasiItem> dataAgenda = new ArrayList<>();
     RecyclerView rvOrganisasi, rvBerita, rvKegiatan;
     SharedPreferences sf;
     BottomNavigationView bottomNavigationView;
     Button btnLihatSemuaBerita;
     CardView card1, cardAgenda, card2, card3, card4;
+    String[] idOrganisasiArray;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +111,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         card3 = rootView.findViewById(R.id.card3);
         card4 = rootView.findViewById(R.id.card4);
 
+        tglAgenda = rootView.findViewById(R.id.tglAgenda);
+        blnAgenda = rootView.findViewById(R.id.blnAgenda);
+        orgAgenda = rootView.findViewById(R.id.orgAgenda);
+        tempatAgenda = rootView.findViewById(R.id.tempatAgenda);
+        kategoriAgenda = rootView.findViewById(R.id.kategoriAgenda);
+
 
         btnLihatSemuaBerita.setOnClickListener(this);
         tvLihatOrganisasi.setOnClickListener(this);
@@ -135,6 +150,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         dataOrganisasi = response.body().getData();
                         rvOrganisasi.setAdapter(new OrganisationAdapter(getActivity(), dataOrganisasi));
                         card1.setVisibility(View.GONE);
+                        int jumlahOrganisasi = dataOrganisasi.size();
+
+                        idOrganisasiArray = new String[jumlahOrganisasi];
+                        
+                        for (int i = 0; i < jumlahOrganisasi; i++) {
+                            idOrganisasiArray[i] = dataOrganisasi.get(i).getIdOrganisasi();
+                        }
+                        setAgenda(idOrganisasiArray);
                     } else {
                         tvOrgNull.setText(response.body().getMessage());
                         tvLihatOrganisasi.setVisibility(View.INVISIBLE);
@@ -152,6 +175,60 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void setAgenda(String[] idOrganisasiArray){
+
+        Call<ResponseAgenda> request = RetrofitClient.getInstance().getApi().getAgendaOrganisasi(idOrganisasiArray);
+        request.enqueue(new Callback<ResponseAgenda>() {
+            @Override
+            public void onResponse(Call<ResponseAgenda> call, Response<ResponseAgenda> response) {
+                if (response.isSuccessful()){
+                    if (!response.body().isError()){
+                        String organisasi, tempat, kategori;
+                        dataAgenda = response.body().getAgendaOrganisasi();
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd", new Locale("id", "ID"));
+                        Date date = null;
+                        try {
+                            date = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgenda.get(0).getTanggal());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String tanggalAgenda = simpleDateFormat.format(date);
+                        tglAgenda.setText(tanggalAgenda);
+
+                        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("MMM", new Locale("id", "ID"));
+                        Date date2 = null;
+                        try {
+                            date2 = new SimpleDateFormat("yyyy-MM-dd").parse(dataAgenda.get(0).getTanggal());
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        String bulanAgenda = simpleDateFormat2.format(date2);
+                        blnAgenda.setText(bulanAgenda.toUpperCase());
+
+                        orgAgenda.setText(dataAgenda.get(0).getNamaOrganisasi());
+                        tempatAgenda.setText(dataAgenda.get(0).getWaktu() + ", " + dataAgenda.get(0).getTempat());
+                        kategoriAgenda.setText(dataAgenda.get(0).getKategori());
+                    } else {
+                        Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                        cardAgenda.setVisibility(View.GONE);
+                        card2.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Terjadi Kesalahan pada saat melihat agenda", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseAgenda> call, Throwable t) {
+                Log.e("debug", "onFailure: ERROR > " + t.toString());
+                Toast.makeText(getContext(), t.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+//        String message = Integer.toString(jumlahOrganisasi);
+//        tglAgenda.setText(message);
     }
 
     // Activate menu
