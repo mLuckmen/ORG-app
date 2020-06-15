@@ -29,6 +29,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -66,7 +67,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     BottomNavigationView bottomNavigationView;
     Button btnLihatSemuaBerita;
     CardView card1, cardAgenda, card2, card3, card4;
-    String[] idOrganisasiArray;
+    public static String[] idOrganisasiArray;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -157,6 +158,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         for (int i = 0; i < jumlahOrganisasi; i++) {
                             idOrganisasiArray[i] = dataOrganisasi.get(i).getIdOrganisasi();
                         }
+
                         setAgenda(idOrganisasiArray);
                     } else {
                         tvOrgNull.setText(response.body().getMessage());
@@ -208,7 +210,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         String bulanAgenda = simpleDateFormat2.format(date2);
                         blnAgenda.setText(bulanAgenda.toUpperCase());
 
-                        orgAgenda.setText(dataAgenda.get(0).getNamaOrganisasi());
+                        orgAgenda.setText(dataAgenda.get(0).getNamaOrganisasi() + " - " + dataAgenda.get(0).getPerihal());
                         tempatAgenda.setText(dataAgenda.get(0).getWaktu() + ", " + dataAgenda.get(0).getTempat());
                         kategoriAgenda.setText(dataAgenda.get(0).getKategori());
                     } else {
@@ -330,4 +332,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
     }
+
 }
