@@ -87,6 +87,16 @@
                         android:text="Harga : Rp."
                         android:textColor="@android:color/white"
                         android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/jumlahTiket"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0 Tiket Terjual"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/lato_bold"
+                        android:layout_marginTop="4dp"
+                        android:textColor="@android:color/white"/>
+
                 </LinearLayout>
 
             </LinearLayout>

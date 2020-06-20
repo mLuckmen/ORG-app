@@ -43,7 +43,7 @@ public class HistoriKegiatanAdapter extends RecyclerView.Adapter<HistoriKegiatan
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String pattern = "EEEE, d MMMM yyyy H:m:s";
+        String pattern = "EEEE, d MMMM yyyy HH:mm:ss";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, new Locale("id", "ID"));
         Date date = null;
         try {

@@ -8,6 +8,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHistoriPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHitungPresensi;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseJumlahTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
@@ -110,6 +111,11 @@ public interface BaseApiService {
     @GET("agenda/getAgendaOrganisasi")
     Call<ResponseAgenda> getAgendaOrganisasi(
             @Query("idOrganisasi") String[] idOrganisasi
+    );
+
+    @GET("kegiatan/jumlahTiket")
+    Call<ResponseJumlahTiket> getJumlahTiket(
+            @Query("idKegiatan") String idKegiatan
     );
 
 }

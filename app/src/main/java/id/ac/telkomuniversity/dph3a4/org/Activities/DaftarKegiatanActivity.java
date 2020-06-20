@@ -35,6 +35,7 @@ import id.ac.telkomuniversity.dph3a4.org.Adapters.KegiatanAdapter;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseCekTiket;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseJumlahTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
 import id.ac.telkomuniversity.dph3a4.org.R;
 import id.ac.telkomuniversity.dph3a4.org.Utils.SharedPrefManager;
@@ -49,7 +50,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
     String[] pilihanJumlahTiket = {"1 Orang", "2 Orang", "Pilih jumlah tiket"};
 
     KegiatanItem dataKegiatan;
-    TextView namaKegiatan, tanggalPelaksanaan, tempatPelaksanaan, harga;
+    TextView namaKegiatan, tanggalPelaksanaan, tempatPelaksanaan, harga, jumlahTiket;
 
     String nama, nim, nimAkun, jurusan, email, total, metode_pembayaran, status, id_kegiatan;
     EditText namaPendaftar, nimPendaftar, jurusanPendaftar, emailPendaftar;
@@ -75,6 +76,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         initComponents();
         bindData();
         setSpinnerForm();
+        jumlahTiket();
 
         btnPesan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,6 +128,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         tanggalPelaksanaan = findViewById(R.id.tvTanggalPelaksanaan2);
         tempatPelaksanaan = findViewById(R.id.tvTempatPelaksanaan2);
         harga = findViewById(R.id.tvHargaTiket2);
+        jumlahTiket = findViewById(R.id.jumlahTiket);
 
         // Formulir
         namaPendaftar = findViewById(R.id.namaPendaftar);
@@ -335,6 +338,24 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
+    }
+
+    public void jumlahTiket(){
+        Call<ResponseJumlahTiket> request = RetrofitClient.getInstance().getApi().getJumlahTiket(dataKegiatan.getIdKegiatan());
+        request.enqueue(new Callback<ResponseJumlahTiket>() {
+            @Override
+            public void onResponse(Call<ResponseJumlahTiket> call, Response<ResponseJumlahTiket> response) {
+                if (response.isSuccessful()){
+                    String message = response.body().getMessage() + " Tiket terjual saat ini";
+                    jumlahTiket.setText(message);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseJumlahTiket> call, Throwable t) {
+
+            }
+        });
     }
 
 }

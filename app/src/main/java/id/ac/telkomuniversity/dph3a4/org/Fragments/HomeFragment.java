@@ -164,6 +164,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         tvOrgNull.setText(response.body().getMessage());
                         tvLihatOrganisasi.setVisibility(View.INVISIBLE);
                         rvOrganisasi.setVisibility(View.GONE);
+                        cardAgenda.setVisibility(View.GONE);
+                        card2.setVisibility(View.VISIBLE);
                     }
                 } else {
                     Toast.makeText(getContext(), "Request not success", Toast.LENGTH_LONG).show();
