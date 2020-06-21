@@ -54,7 +54,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
 
     String nama, nim, nimAkun, jurusan, email, total, metode_pembayaran, status, id_kegiatan;
     EditText namaPendaftar, nimPendaftar, jurusanPendaftar, emailPendaftar;
-    Button btnPesan;
+    Button btnPesan, btnBaru;
 
     ImageView posterKegiatan;
     Context context;
@@ -138,6 +138,14 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         spinnerPembayaran = findViewById(R.id.spinnerPembayaran);
 //        spinnerJumlah = findViewById(R.id.spinnerJumlah);
         btnPesan = findViewById(R.id.btnPesan2);
+        btnBaru = findViewById(R.id.btnBaru);
+        btnBaru.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent pindah = new Intent(context, DaftarKegiatanBaru.class);
+                startActivity(pindah);
+            }
+        });
 
         sharedPrefManager = new SharedPrefManager(context);
         sf = context.getSharedPreferences("OrgApp", Context.MODE_PRIVATE);
@@ -268,7 +276,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         nama2 = myDialog.findViewById(R.id.tvDetailNama);
         nim2 = myDialog.findViewById(R.id.tvDetailNim);
         jurusan2 = myDialog.findViewById(R.id.tvDetailJurusan);
-        email2 = myDialog.findViewById(R.id.tvDetailEmail);
+//        email2 = myDialog.findViewById(R.id.tvDetailEmail);
 //        jumlahTiket2 = myDialog.findViewById(R.id.tvDetailJumlahTiket);
         metodePembayaran2 = myDialog.findViewById(R.id.tvDetailMetodePembayaran);
         total2 = myDialog.findViewById(R.id.tvDetailTotal);
@@ -278,7 +286,7 @@ public class DaftarKegiatanActivity extends AppCompatActivity {
         nama2.setText(nama);
         nim2.setText(nim);
         jurusan2.setText(jurusan);
-        email2.setText(email);
+//        email2.setText(email);
 //        jumlahTiket2.setText(jumlah);
         metodePembayaran2.setText(metode_pembayaran);
         total2.setText("Rp. " + total);

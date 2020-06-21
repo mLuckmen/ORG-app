@@ -14,10 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Activities.DaftarKegiatanBaru"></activity>
         <activity
             android:name=".Activities.HistoryKegiatanActivity"
             android:label="@string/title_activity_history_kegiatan"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.PresensiSuccessActivity" />
         <activity android:name=".Activities.QrScannerActivity" />
         <activity android:name=".Activities.LihatBeritaActivity" />

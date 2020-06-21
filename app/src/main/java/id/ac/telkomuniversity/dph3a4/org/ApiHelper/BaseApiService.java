@@ -11,6 +11,7 @@ import id.ac.telkomuniversity.dph3a4.org.Model.ResponseHitungPresensi;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseJumlahTiket;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatan;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseKegiatanByNama;
+import id.ac.telkomuniversity.dph3a4.org.Model.ResponseMahasiswa;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponseOrganisation;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePengurus;
 import id.ac.telkomuniversity.dph3a4.org.Model.ResponsePesanTiket;
@@ -117,5 +118,8 @@ public interface BaseApiService {
     Call<ResponseJumlahTiket> getJumlahTiket(
             @Query("idKegiatan") String idKegiatan
     );
+
+    @GET("mahasiswa/getMahasiswa")
+    Call<ResponseMahasiswa> getMahasiswa();
 
 }

@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 
 import id.ac.telkomuniversity.dph3a4.org.Activities.DaftarKegiatanActivity;
+import id.ac.telkomuniversity.dph3a4.org.Activities.DaftarKegiatanBaru;
 import id.ac.telkomuniversity.dph3a4.org.ApiHelper.RetrofitClient;
 import id.ac.telkomuniversity.dph3a4.org.Model.KegiatanItem;
 import id.ac.telkomuniversity.dph3a4.org.R;
@@ -75,7 +76,7 @@ public class KegiatanAdapter extends RecyclerView.Adapter<KegiatanAdapter.MyView
         holder.btnDaftar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent pindah = new Intent(context, DaftarKegiatanActivity.class);
+                Intent pindah = new Intent(context, DaftarKegiatanBaru.class);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(DATA_KEGIATAN, Parcels.wrap(dataKegiatan.get(position)));
                 pindah.putExtra(DATA_EXTRA, bundle);
